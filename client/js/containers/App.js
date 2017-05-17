@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as actions from '../actions/actions';
+import { GameState } from '../constants';
 import ControlPanel from '../components/ControlPanel';
 import SecretCode from '../components/SecretCode';
 import GuessRow from '../components/GuessRow';
@@ -9,6 +10,7 @@ import GuessRow from '../components/GuessRow';
 class App extends Component {
     render() {
         const props = this.props;
+        const reveal = props.gameState !== GameState.IN_PROGRESS;
         return (
             <div className="container">
                 <div className="row">
@@ -28,7 +30,7 @@ class App extends Component {
                 </div>
                 <div className="row">
                     <div className="col-md-offset-1 col-md-11">
-                        <SecretCode code={props.secret}></SecretCode>
+                        <SecretCode code={props.secret} reveal={reveal}></SecretCode>
                     </div>
                 </div>
                 {

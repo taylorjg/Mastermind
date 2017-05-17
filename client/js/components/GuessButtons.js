@@ -7,13 +7,13 @@ const GuessButtons = ({
     onGuess,
     onClear
 }) => {
-    const conditionalAttributes1 = {};
-    if (code.length != 4) {
-        conditionalAttributes1.disabled = true;
+    const conditionalAttributesSubmit = {};
+    if (code.length !== 4) {
+        conditionalAttributesSubmit.disabled = true;
     }
-    const conditionalAttributes2 = {};
-    if (code.length) {
-        conditionalAttributes2.disabled = true;
+    const conditionalAttributesClear = {};
+    if (code.length === 0) {
+        conditionalAttributesClear.disabled = true;
     }
     return (
         <div className="col-md-7">
@@ -21,19 +21,19 @@ const GuessButtons = ({
                 active &&
                 <button
                     className="btn btn-sm btn-info"
-                    {...conditionalAttributes1}
-                    onClick={code => onGuess(code)}
+                    {...conditionalAttributesSubmit}
+                    onClick={() => onGuess(code)}
                 >Submit
-            </button>
+                </button>
             }
             {
                 active &&
                 <button
                     className="btn btn-sm btn-danger"
-                    {...conditionalAttributes1}
+                    {...conditionalAttributesSubmit}
                     onClick={onClear}
                 >Clear
-            </button>
+                </button>
             }
         </div>
     );

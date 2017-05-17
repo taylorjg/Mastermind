@@ -61,9 +61,38 @@ export default (state = initialState, action) => {
                 ]
             };
 
-        case AT.GUESS:
+        case AT.CORRECT_GUESS:
             return {
-                ...state
+                ...state,
+                gameState: GameState.WON
+            };
+
+        case AT.INCORRECT_GUESS:
+            return {
+                ...state,
+                guesses: [
+                    ...state.guesses.slice(0, state.guesses.length - 1),
+                    Object.assign(
+                        {},
+                        state.guesses[state.guesses.length - 1],
+                        {
+                            active: false
+                        }),
+                    {
+                        active: true,
+                        code: [],
+                        feedback: {
+                            blacks: action.blacks,
+                            whites: action.whites
+                        }
+                    }
+                ]
+            };
+
+        case AT.EXCEEDED_GUESSES:
+            return {
+                ...state,
+                gameState: GameState.LOST
             };
 
         case AT.CLEAR:

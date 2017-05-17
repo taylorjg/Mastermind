@@ -12,5 +12,6 @@ export const PegColours = {
 export const GameState = {
     INITIALISED: Symbol('initialised'),
     IN_PROGRESS: Symbol('in_progress'),
-    OVER: Symbol('over'),
+    WON: Symbol('won'),
+    LOST: Symbol('lost')
 };
