@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import * as actions from '../actions/actions';
 import ControlPanel from '../components/ControlPanel';
 import SecretCode from '../components/SecretCode';
 import GuessRow from '../components/GuessRow';
@@ -20,7 +21,7 @@ class App extends Component {
                 </div>
                 <div className="row">
                     <div className="col-md-offset-1 col-md-1">
-                        <ControlPanel></ControlPanel>
+                        <ControlPanel onStart={props.onStart}></ControlPanel>
                     </div>
                     <div className="col-md-10">
                     </div>
@@ -32,7 +33,13 @@ class App extends Component {
                 </div>
                 {
                     props.guesses.map((guess, index) =>
-                        <GuessRow key={index} guess={guess}></GuessRow>)
+                        <GuessRow
+                            key={index}
+                            guess={guess}
+                            onGuess={props.onGuess}
+                            onClear={props.onClear}
+                        >
+                        </GuessRow>)
                 }
             </div>
         );
@@ -44,20 +51,24 @@ App.propTypes = {
     gameState: PropTypes.symbol.isRequired,
     secret: PropTypes.arrayOf(PropTypes.symbol).isRequired,
     guesses: PropTypes.arrayOf(PropTypes.shape({
+        active: PropTypes.bool.isRequired,
         code: PropTypes.arrayOf(PropTypes.symbol).isRequired,
         feedback: PropTypes.shape({
             blacks: PropTypes.number.isRequired,
             whites: PropTypes.number.isRequired
         }).isRequired
-    })).isRequired
+    })).isRequired,
+    onStart: PropTypes.func.isRequired,
+    onGuess: PropTypes.func.isRequired,
+    onClear: PropTypes.func.isRequired
 };
 
-const mapStateToProps = state => ({
-    ...state
-});
+const mapStateToProps = state => state;
 
 const mapDispatchToProps = dispatch => ({
-    onExample: () => dispatch({ type: 'example' })
+    onStart: () => dispatch(actions.start()),
+    onGuess: code => dispatch(actions.guess(code)),
+    onClear: () => dispatch(actions.clear())
 });
 
 export default connect(

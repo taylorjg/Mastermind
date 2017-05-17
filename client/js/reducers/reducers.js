@@ -1,4 +1,5 @@
 import { GameState, PegColours } from '../constants';
+import * as AT from '../actions/actionTypes';
 
 const initialState = {
     gameState: GameState.INITIALISED,
@@ -10,6 +11,7 @@ const initialState = {
     ],
     guesses: [
         {
+            active: false,
             code: [
                 PegColours.RED,
                 PegColours.YELLOW,
@@ -22,6 +24,7 @@ const initialState = {
             }
         },
         {
+            active: true,
             code: [
                 PegColours.RED,
                 PegColours.RED,
@@ -37,8 +40,46 @@ const initialState = {
 };
 
 export default (state = initialState, action) => {
-    console.log(`action: ${JSON.stringify(action)}`);
+
+    console.log(`action.type: ${action.type}`);
+
     switch (action.type) {
+
+        case AT.START:
+            return {
+                ...state,
+                gameState: GameState.IN_PROGRESS,
+                guesses: [
+                    {
+                        active: true,
+                        code: [],
+                        feedback: {
+                            blacks: 0,
+                            whites: 0
+                        }
+                    }
+                ]
+            };
+
+        case AT.GUESS:
+            return {
+                ...state
+            };
+
+        case AT.CLEAR:
+            return {
+                ...state,
+                guesses: [
+                    ...state.guesses.slice(0, state.guesses.length - 1),
+                    Object.assign(
+                        {},
+                        state.guesses[state.guesses.length - 1],
+                        {
+                            code: []
+                        })
+                ]
+            };
+
         default:
             return state;
     }
