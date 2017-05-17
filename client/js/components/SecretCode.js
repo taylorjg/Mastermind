@@ -6,7 +6,7 @@ import Shield from './Shield';
 const SecretCode = ({ reveal, code }) => {
     return (
         reveal
-            ? <Code code={code}></Code>
+            ? <Code readOnly={true} code={code}></Code>
             : <Shield></Shield>
     );
 };

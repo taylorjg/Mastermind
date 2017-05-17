@@ -7,12 +7,13 @@ const GuessButtons = ({
     onGuess,
     onClear
 }) => {
+    const definedCount = code.filter(x => !!x).length;
     const conditionalAttributesSubmit = {};
-    if (code.length !== 4) {
+    if (definedCount < 4) {
         conditionalAttributesSubmit.disabled = true;
     }
     const conditionalAttributesClear = {};
-    if (code.length === 0) {
+    if (!definedCount) {
         conditionalAttributesClear.disabled = true;
     }
     return (
@@ -30,7 +31,7 @@ const GuessButtons = ({
                 active &&
                 <button
                     className="btn btn-sm btn-danger"
-                    {...conditionalAttributesSubmit}
+                    {...conditionalAttributesClear}
                     onClick={onClear}
                 >Clear
                 </button>

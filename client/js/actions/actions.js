@@ -5,10 +5,10 @@ export const start = () => ({
     type: AT.START
 });
 
-export const addPegToGuess = (index, pegColour) => ({
+export const addPegToGuess = (index, peg) => ({
     type: AT.ADD_PEG_TO_GUESS,
     index,
-    pegColour
+    peg
 });
 
 export const guess = guess =>
@@ -37,7 +37,7 @@ const evaluateGuess = (secret, guess) => {
     const minRemainingCommon = Math.min(remainingCommonGuessPegs.length, remainingCommonSecretPegs.length);
     return {
         blacks: matchingPairs.length,
-        whites: minRemainingCommon.length
+        whites: minRemainingCommon
     };
 };
 

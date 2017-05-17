@@ -1,32 +1,29 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { PegColours } from '../constants';
+import Peg from './Peg';
 
-const Code = ({ code }) => {
+const Code = ({
+    readOnly,
+    code,
+    onAddPegToGuess
+}) => {
     return (
         <div>
-            <span>{SYMBOL_TO_COLOUR[code[0]]}</span>
+            <Peg index={0} code={code} onClick={(index, peg) => !readOnly && onAddPegToGuess(index, peg)}></Peg>
             {" "}
-            <span>{SYMBOL_TO_COLOUR[code[1]]}</span>
+            <Peg index={1} code={code} onClick={(index, peg) => !readOnly && onAddPegToGuess(index, peg)}></Peg>
             {" "}
-            <span>{SYMBOL_TO_COLOUR[code[2]]}</span>
+            <Peg index={2} code={code} onClick={(index, peg) => !readOnly && onAddPegToGuess(index, peg)}></Peg>
             {" "}
-            <span>{SYMBOL_TO_COLOUR[code[3]]}</span>
+            <Peg index={3} code={code} onClick={(index, peg) => !readOnly && onAddPegToGuess(index, peg)}></Peg>
         </div>
     );
 };
 
 Code.propTypes = {
-    code: PropTypes.arrayOf(PropTypes.symbol).isRequired
-};
-
-const SYMBOL_TO_COLOUR = {
-    [PegColours.RED]: 'red',
-    [PegColours.GREEN]: 'green',
-    [PegColours.BLUE]: 'blue',
-    [PegColours.YELLOW]: 'yellow',
-    [PegColours.BLACK]: 'black',
-    [PegColours.WHITE]: 'white'
+    readOnly: PropTypes.bool.isRequired,
+    code: PropTypes.arrayOf(PropTypes.symbol).isRequired,
+    onAddPegToGuess: PropTypes.func
 };
 
 export default Code;

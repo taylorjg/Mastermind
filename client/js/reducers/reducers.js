@@ -3,40 +3,8 @@ import * as AT from '../actions/actionTypes';
 
 const initialState = {
     gameState: GameState.INITIALISED,
-    secret: [
-        PegColours.RED,
-        PegColours.YELLOW,
-        PegColours.GREEN,
-        PegColours.BLUE
-    ],
-    guesses: [
-        {
-            active: false,
-            code: [
-                PegColours.RED,
-                PegColours.YELLOW,
-                PegColours.BLUE,
-                PegColours.WHITE
-            ],
-            feedback: {
-                blacks: 2,
-                whites: 1
-            }
-        },
-        {
-            active: true,
-            code: [
-                PegColours.RED,
-                PegColours.RED,
-                PegColours.WHITE,
-                PegColours.GREEN
-            ],
-            feedback: {
-                blacks: 1,
-                whites: 1
-            }
-        }
-    ]
+    secret: [null, null, null, null],
+    guesses: []
 };
 
 export default (state = initialState, action) => {
@@ -49,15 +17,39 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 gameState: GameState.IN_PROGRESS,
+                secret: [
+                    PegColours.RED,
+                    PegColours.YELLOW,
+                    PegColours.GREEN,
+                    PegColours.BLUE
+                ],
                 guesses: [
                     {
                         active: true,
-                        code: [],
+                        code: [null, null, null, null],
                         feedback: {
                             blacks: 0,
                             whites: 0
                         }
                     }
+                ]
+            };
+
+        case AT.ADD_PEG_TO_GUESS:
+            return {
+                ...state,
+                guesses: [
+                    ...state.guesses.slice(0, state.guesses.length - 1),
+                    Object.assign(
+                        {},
+                        state.guesses[state.guesses.length - 1],
+                        {
+                            code: [
+                                ...state.guesses[state.guesses.length - 1].code.slice(0, action.index),
+                                action.peg,
+                                ...state.guesses[state.guesses.length - 1].code.slice(action.index + 1),
+                            ]
+                        })
                 ]
             };
 
@@ -80,7 +72,7 @@ export default (state = initialState, action) => {
                         }),
                     {
                         active: true,
-                        code: [],
+                        code: [null, null, null, null],
                         feedback: {
                             blacks: action.blacks,
                             whites: action.whites
@@ -104,7 +96,7 @@ export default (state = initialState, action) => {
                         {},
                         state.guesses[state.guesses.length - 1],
                         {
-                            code: []
+                            code: [null, null, null, null]
                         })
                 ]
             };
