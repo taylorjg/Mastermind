@@ -1,6 +1,7 @@
 export const MAX_GUESSES = 10;
 
-export const PegColours = {
+export const Peg = {
+    UNSELECTED: Symbol('unselected'),
     RED: Symbol('red'),
     GREEN: Symbol('green'),
     BLUE: Symbol('blue'),

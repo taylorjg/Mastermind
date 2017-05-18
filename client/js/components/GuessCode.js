@@ -5,7 +5,7 @@ import Code from './Code';
 const GuessCode = ({ readOnly, code, onSetPeg }) => {
     return (
         <div>
-            <div className="col-md-2">
+            <div className="col-md-3">
                 <Code
                     readOnly={readOnly}
                     code={code}

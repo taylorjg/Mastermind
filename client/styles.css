@@ -1,3 +1,10 @@
 body {
     margin-top: 20px;
 }
+
+#board {
+    background-image: url('assets/wood.png')
+}
+
+.peg {
+}

@@ -1,7 +1,7 @@
-import { GameState, PegColours } from '../constants';
+import { GameState, Peg } from '../constants';
 import * as AT from '../actions/actionTypes';
 
-const EMPTY_CODE = [null, null, null, null];
+const EMPTY_CODE = Array(4).fill(Peg.UNSELECTED);
 
 const initialState = {
     gameState: GameState.INITIALISED,
@@ -20,10 +20,10 @@ export default (state = initialState, action) => {
                 ...state,
                 gameState: GameState.IN_PROGRESS,
                 secret: [
-                    PegColours.RED,
-                    PegColours.YELLOW,
-                    PegColours.GREEN,
-                    PegColours.BLUE
+                    Peg.RED,
+                    Peg.YELLOW,
+                    Peg.GREEN,
+                    Peg.BLUE
                 ],
                 guesses: [
                     {

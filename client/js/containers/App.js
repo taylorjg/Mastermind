@@ -21,30 +21,32 @@ class App extends Component {
                         <hr />
                     </div>
                 </div>
-                <div className="row">
-                    <div className="col-md-offset-1 col-md-1">
-                        <ControlPanel onStart={props.onStart}></ControlPanel>
+                <div id="board">
+                    <div className="row">
+                        <div className="col-md-offset-1 col-md-1">
+                            <ControlPanel onStart={props.onStart}></ControlPanel>
+                        </div>
+                        <div className="col-md-10">
+                        </div>
                     </div>
-                    <div className="col-md-10">
+                    <div className="row">
+                        <div className="col-md-offset-2 col-md-11">
+                            <SecretCode code={props.secret} reveal={reveal}></SecretCode>
+                        </div>
                     </div>
+                    {
+                        props.guesses.map((guess, index) =>
+                            <GuessRow
+                                key={index}
+                                index={index}
+                                guess={guess}
+                                onSetPeg={props.onSetPeg}
+                                onGuess={props.onGuess}
+                                onClear={props.onClear}
+                            >
+                            </GuessRow>)
+                    }
                 </div>
-                <div className="row">
-                    <div className="col-md-offset-1 col-md-11">
-                        <SecretCode code={props.secret} reveal={reveal}></SecretCode>
-                    </div>
-                </div>
-                {
-                    props.guesses.map((guess, index) =>
-                        <GuessRow
-                            key={index}
-                            index={index}
-                            guess={guess}
-                            onSetPeg={props.onSetPeg}
-                            onGuess={props.onGuess}
-                            onClear={props.onClear}
-                        >
-                        </GuessRow>)
-                }
             </div>
         );
     }

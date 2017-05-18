@@ -1,13 +1,13 @@
 import { expect } from 'chai';
 import { evaluateGuess } from '../js/logic';
-import { PegColours } from '../js/constants';
+import { Peg } from '../js/constants';
 
-const R = PegColours.RED;
-const G = PegColours.GREEN;
-const B = PegColours.BLUE;
-const Y = PegColours.YELLOW;
-const BL = PegColours.BLACK;
-const WH = PegColours.WHITE;
+const R = Peg.RED;
+const G = Peg.GREEN;
+const B = Peg.BLUE;
+const Y = Peg.YELLOW;
+const BL = Peg.BLACK;
+const WH = Peg.WHITE;
 
 describe('logic', () => {
 
