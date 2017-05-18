@@ -38,7 +38,7 @@ class App extends Component {
                         <GuessRow
                             key={index}
                             guess={guess}
-                            onAddPegToGuess={props.onAddPegToGuess}
+                            onSetPeg={props.onSetPeg}
                             onGuess={props.onGuess}
                             onClear={props.onClear}
                         >
@@ -62,7 +62,7 @@ App.propTypes = {
         }).isRequired
     })).isRequired,
     onStart: PropTypes.func.isRequired,
-    onAddPegToGuess: PropTypes.func.isRequired,
+    onSetPeg: PropTypes.func.isRequired,
     onGuess: PropTypes.func.isRequired,
     onClear: PropTypes.func.isRequired
 };
@@ -71,7 +71,7 @@ const mapStateToProps = state => state;
 
 const mapDispatchToProps = dispatch => ({
     onStart: () => dispatch(actions.start()),
-    onAddPegToGuess: (index, pegColour) => dispatch(actions.addPegToGuess(index, pegColour)),
+    onSetPeg: (index, peg) => dispatch(actions.setPeg(index, peg)),
     onGuess: code => dispatch(actions.guess(code)),
     onClear: () => dispatch(actions.clear())
 });

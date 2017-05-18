@@ -5,17 +5,25 @@ import Peg from './Peg';
 const Code = ({
     readOnly,
     code,
-    onAddPegToGuess
+    onSetPeg
 }) => {
+    const makePeg = index => (
+         <Peg
+            index={index}
+            code={code}
+            onClick={(index, peg) => !readOnly && onSetPeg(index, peg)}
+        >
+        </Peg>
+    );
     return (
         <div>
-            <Peg index={0} code={code} onClick={(index, peg) => !readOnly && onAddPegToGuess(index, peg)}></Peg>
+            {makePeg(0)}
             {" "}
-            <Peg index={1} code={code} onClick={(index, peg) => !readOnly && onAddPegToGuess(index, peg)}></Peg>
+            {makePeg(1)}
             {" "}
-            <Peg index={2} code={code} onClick={(index, peg) => !readOnly && onAddPegToGuess(index, peg)}></Peg>
+            {makePeg(2)}
             {" "}
-            <Peg index={3} code={code} onClick={(index, peg) => !readOnly && onAddPegToGuess(index, peg)}></Peg>
+            {makePeg(3)}
         </div>
     );
 };
@@ -23,7 +31,7 @@ const Code = ({
 Code.propTypes = {
     readOnly: PropTypes.bool.isRequired,
     code: PropTypes.arrayOf(PropTypes.symbol).isRequired,
-    onAddPegToGuess: PropTypes.func
+    onSetPeg: PropTypes.func
 };
 
 export default Code;

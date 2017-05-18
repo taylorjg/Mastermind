@@ -2,14 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Code from './Code';
 
-const GuessCode = ({ readOnly, code, onAddPegToGuess }) => {
+const GuessCode = ({ readOnly, code, onSetPeg }) => {
     return (
         <div>
             <div className="col-md-4">
                 <Code
                     readOnly={readOnly}
                     code={code}
-                    onAddPegToGuess={onAddPegToGuess}
+                    onSetPeg={onSetPeg}
                 >
                 </Code>
             </div>
@@ -20,7 +20,7 @@ const GuessCode = ({ readOnly, code, onAddPegToGuess }) => {
 GuessCode.propTypes = {
     readOnly: PropTypes.bool.isRequired,
     code: PropTypes.arrayOf(PropTypes.symbol).isRequired,
-    onAddPegToGuess: PropTypes.func
+    onSetPeg: PropTypes.func
 };
 
 export default GuessCode;

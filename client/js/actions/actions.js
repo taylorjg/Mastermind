@@ -5,12 +5,6 @@ export const start = () => ({
     type: AT.START
 });
 
-export const addPegToGuess = (index, peg) => ({
-    type: AT.ADD_PEG_TO_GUESS,
-    index,
-    peg
-});
-
 export const guess = guess =>
     (dispatch, getState) => {
         const state = getState();
@@ -26,6 +20,16 @@ export const guess = guess =>
         }
     };
 
+export const clear = () => ({
+    type: AT.CLEAR
+});
+
+export const setPeg = (index, peg) => ({
+    type: AT.SET_PEG,
+    index,
+    peg
+});
+
 const evaluateGuess = (secret, guess) => {
     const pairs = secret.map((item, index) => [item, guess[index]]);
     const matchingPairs = pairs.filter(([item1, item2]) => item1 === item2);
@@ -40,7 +44,3 @@ const evaluateGuess = (secret, guess) => {
         whites: minRemainingCommon
     };
 };
-
-export const clear = () => ({
-    type: AT.CLEAR
-});

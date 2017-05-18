@@ -35,7 +35,7 @@ export default (state = initialState, action) => {
                 ]
             };
 
-        case AT.ADD_PEG_TO_GUESS:
+        case AT.SET_PEG:
             return {
                 ...state,
                 guesses: [
