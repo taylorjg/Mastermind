@@ -14,6 +14,11 @@ body {
     margin: 20px;
 }
 
+.row div {
+    line-height: 50px;
+    vertical-align: middle;
+}
+
 button {
     margin: 10px;
 }

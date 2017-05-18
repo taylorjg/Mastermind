@@ -1,16 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { FeedbackPeg as FP } from '../constants';
+import FeedbackPeg from './FeedbackPeg';
 
 const GuessFeedback = ({ feedback }) => {
+    const feedbackPegs = [].concat(
+        Array(feedback.blacks).fill(FP.BLACK),
+        Array(feedback.whites).fill(FP.WHITE),
+        Array(4 - feedback.blacks - feedback.whites).fill(FP.NONE)
+    );
     return (
-        <div className="col-md-1">
+        <div className="col-md-2">
             {
-                Array.from(Array(feedback.blacks).keys()).map((_, index) =>
-                    <span key={index}>B</span>)
-            }
-            {
-                Array.from(Array(feedback.whites).keys()).map((_, index) =>
-                    <span key={index}>W</span>)
+                feedbackPegs.map((fp, index) =>
+                    <FeedbackPeg
+                        key={index}
+                        index={index}
+                        feedbackPegs={feedbackPegs}
+                    >
+                    </FeedbackPeg>)
             }
         </div>
     );

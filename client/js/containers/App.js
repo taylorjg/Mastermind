@@ -30,7 +30,7 @@ class App extends Component {
                         </div>
                     </div>
                     <div className="row">
-                        <div className="col-md-offset-2 col-md-11">
+                        <div className="col-md-offset-3 col-md-9">
                             <SecretCode code={props.secret} reveal={reveal}></SecretCode>
                         </div>
                     </div>

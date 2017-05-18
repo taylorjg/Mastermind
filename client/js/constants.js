@@ -10,6 +10,12 @@ export const Peg = {
     WHITE: Symbol('white')
 };
 
+export const FeedbackPeg = {
+    NONE: Symbol('none'),
+    BLACK: Symbol('black'),
+    WHITE: Symbol('white')
+};
+
 export const GameState = {
     INITIALISED: Symbol('initialised'),
     IN_PROGRESS: Symbol('in_progress'),
