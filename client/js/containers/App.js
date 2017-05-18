@@ -24,7 +24,7 @@ class App extends Component {
                 <div id="board">
                     <div className="row">
                         <div className="col-md-offset-1 col-md-1">
-                            <ControlPanel onStart={props.onStart}></ControlPanel>
+                            <ControlPanel gameState={props.gameState} onStart={props.onStart}></ControlPanel>
                         </div>
                         <div className="col-md-10">
                         </div>
