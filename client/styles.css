@@ -3,8 +3,17 @@ body {
 }
 
 #board {
-    background-image: url('assets/wood.png')
+    background-image: url('assets/wood.png');
+    color: #ffffff;
 }
 
 .peg {
+}
+
+.row {
+    margin: 20px;
+}
+
+button {
+    margin: 10px;
 }

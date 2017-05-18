@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Peg } from '../constants';
 
 const GuessButtons = ({
     active,
@@ -7,13 +8,13 @@ const GuessButtons = ({
     onGuess,
     onClear
 }) => {
-    const definedCount = code.filter(x => !!x).length;
+    const unselected = peg => peg === Peg.UNSELECTED;
     const conditionalAttributesSubmit = {};
-    if (definedCount < 4) {
+    if (code.some(unselected)) {
         conditionalAttributesSubmit.disabled = true;
     }
     const conditionalAttributesClear = {};
-    if (!definedCount) {
+    if (code.every(unselected)) {
         conditionalAttributesClear.disabled = true;
     }
     return (
