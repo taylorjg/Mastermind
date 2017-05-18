@@ -6,7 +6,7 @@
   "main": "server/app.js",
   "scripts": {
     "start": "node server/app.js",
-    "test": "mocha server/test",
+    "test": "mocha --compilers js:babel-register --harmony_array_includes client/tests",
     "heroku-postbuild": "npm install --dev && webpack"
   },
   "author": "Jonathan Taylor",
