@@ -37,6 +37,7 @@ class App extends Component {
                     props.guesses.map((guess, index) =>
                         <GuessRow
                             key={index}
+                            index={index}
                             guess={guess}
                             onSetPeg={props.onSetPeg}
                             onGuess={props.onGuess}

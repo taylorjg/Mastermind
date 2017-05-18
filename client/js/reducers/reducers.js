@@ -1,9 +1,11 @@
 import { GameState, PegColours } from '../constants';
 import * as AT from '../actions/actionTypes';
 
+const EMPTY_CODE = [null, null, null, null];
+
 const initialState = {
     gameState: GameState.INITIALISED,
-    secret: [null, null, null, null],
+    secret: EMPTY_CODE,
     guesses: []
 };
 
@@ -26,7 +28,7 @@ export default (state = initialState, action) => {
                 guesses: [
                     {
                         active: true,
-                        code: [null, null, null, null],
+                        code: EMPTY_CODE,
                         feedback: {
                             blacks: 0,
                             whites: 0
@@ -72,10 +74,10 @@ export default (state = initialState, action) => {
                         }),
                     {
                         active: true,
-                        code: [null, null, null, null],
+                        code: EMPTY_CODE,
                         feedback: {
-                            blacks: action.blacks,
-                            whites: action.whites
+                            blacks: action.feedback.blacks,
+                            whites: action.feedback.whites
                         }
                     }
                 ]
@@ -96,7 +98,7 @@ export default (state = initialState, action) => {
                         {},
                         state.guesses[state.guesses.length - 1],
                         {
-                            code: [null, null, null, null]
+                            code: EMPTY_CODE
                         })
                 ]
             };
