@@ -58,7 +58,16 @@ export default (state = initialState, action) => {
         case AT.CORRECT_GUESS:
             return {
                 ...state,
-                gameState: GameState.WON
+                gameState: GameState.WON,
+                guesses: [
+                    ...state.guesses.slice(0, state.guesses.length - 1),
+                    Object.assign(
+                        {},
+                        state.guesses[state.guesses.length - 1],
+                        {
+                            active: false
+                        })
+                ]
             };
 
         case AT.INCORRECT_GUESS:
@@ -86,7 +95,16 @@ export default (state = initialState, action) => {
         case AT.EXCEEDED_GUESSES:
             return {
                 ...state,
-                gameState: GameState.LOST
+                gameState: GameState.LOST,
+                guesses: [
+                    ...state.guesses.slice(0, state.guesses.length - 1),
+                    Object.assign(
+                        {},
+                        state.guesses[state.guesses.length - 1],
+                        {
+                            active: false
+                        })
+                ]
             };
 
         case AT.CLEAR:

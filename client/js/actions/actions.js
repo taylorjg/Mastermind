@@ -11,10 +11,10 @@ export const guess = guess =>
         const state = getState();
         const feedback = evaluateGuess(state.secret, guess);
         if (feedback.blacks === 4) {
-            dispatch(correctGuess());
+            dispatch(correctGuess(feedback));
         } else {
             if (state.guesses.length === MAX_GUESSES) {
-                dispatch(exceededGuesses());
+                dispatch(exceededGuesses(feedback));
             } else {
                 dispatch(incorrectGuess(feedback));
             }
@@ -31,8 +31,9 @@ export const setPeg = (index, peg) => ({
     peg
 });
 
-export const correctGuess = () => ({
-    type: AT.CORRECT_GUESS
+export const correctGuess = feedback => ({
+    type: AT.CORRECT_GUESS,
+    feedback
 });
 
 export const incorrectGuess = feedback => ({
@@ -40,6 +41,7 @@ export const incorrectGuess = feedback => ({
     feedback
 });
 
-export const exceededGuesses = () => ({
-    type: AT.EXCEEDED_GUESSES
+export const exceededGuesses = feedback => ({
+    type: AT.EXCEEDED_GUESSES,
+    feedback
 });
