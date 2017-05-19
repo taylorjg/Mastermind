@@ -10,7 +10,7 @@ import GuessRow from '../components/GuessRow';
 class App extends Component {
     render() {
         const props = this.props;
-        const reveal = props.gameState !== GameState.IN_PROGRESS;
+        const reveal = props.gameState === GameState.WON || props.gameState === GameState.LOST;
         return (
             <div className="container">
                 <div className="row">
