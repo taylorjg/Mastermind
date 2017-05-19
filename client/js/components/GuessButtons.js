@@ -18,7 +18,7 @@ const GuessButtons = ({
         conditionalAttributesClear.disabled = true;
     }
     return (
-        <div className="col-md-6">
+        <div className="col-md-2">
             {
                 active &&
                 <button

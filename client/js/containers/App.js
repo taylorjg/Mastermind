@@ -23,14 +23,14 @@ class App extends Component {
                 </div>
                 <div id="board">
                     <div className="row">
-                        <div className="col-md-offset-1 col-md-1">
+                        <div className="col-md-offset-2 col-md-1">
                             <ControlPanel gameState={props.gameState} onStart={props.onStart}></ControlPanel>
                         </div>
                         <div className="col-md-10">
                         </div>
                     </div>
                     <div className="row">
-                        <div className="col-md-offset-3 col-md-9">
+                        <div className="col-md-offset-5 col-md-3">
                             <SecretCode code={props.secret} reveal={reveal}></SecretCode>
                         </div>
                     </div>
