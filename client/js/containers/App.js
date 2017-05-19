@@ -59,10 +59,7 @@ App.propTypes = {
     guesses: PropTypes.arrayOf(PropTypes.shape({
         active: PropTypes.bool.isRequired,
         code: PropTypes.arrayOf(PropTypes.symbol).isRequired,
-        feedback: PropTypes.shape({
-            blacks: PropTypes.number.isRequired,
-            whites: PropTypes.number.isRequired
-        }).isRequired
+        feedbackPegs: PropTypes.arrayOf(PropTypes.symbol).isRequired
     })).isRequired,
     onStart: PropTypes.func.isRequired,
     onSetPeg: PropTypes.func.isRequired,

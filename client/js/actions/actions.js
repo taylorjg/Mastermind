@@ -1,5 +1,5 @@
 import * as AT from './actionTypes';
-import { MAX_GUESSES } from '../constants';
+import { MAX_GUESSES, FeedbackPeg } from '../constants';
 import { evaluateGuess} from '../logic';
 
 export const start = () => ({
@@ -10,13 +10,17 @@ export const guess = guess =>
     (dispatch, getState) => {
         const state = getState();
         const feedback = evaluateGuess(state.secret, guess);
+        const feedbackPegs = [].concat(
+            Array(feedback.blacks).fill(FeedbackPeg.BLACK),
+            Array(feedback.whites).fill(FeedbackPeg.WHITE)
+        );
         if (feedback.blacks === 4) {
-            dispatch(correctGuess(feedback));
+            dispatch(correctGuess());
         } else {
             if (state.guesses.length === MAX_GUESSES) {
-                dispatch(exceededGuesses(feedback));
+                dispatch(exceededGuesses());
             } else {
-                dispatch(incorrectGuess(feedback));
+                dispatch(incorrectGuess(feedbackPegs));
             }
         }
     };
@@ -31,17 +35,15 @@ export const setPeg = (index, peg) => ({
     peg
 });
 
-export const correctGuess = feedback => ({
-    type: AT.CORRECT_GUESS,
-    feedback
+export const correctGuess = () => ({
+    type: AT.CORRECT_GUESS
 });
 
-export const incorrectGuess = feedback => ({
+export const incorrectGuess = feedbackPegs => ({
     type: AT.INCORRECT_GUESS,
-    feedback
+    feedbackPegs
 });
 
-export const exceededGuesses = feedback => ({
-    type: AT.EXCEEDED_GUESSES,
-    feedback
+export const exceededGuesses = () => ({
+    type: AT.EXCEEDED_GUESSES
 });

@@ -2,6 +2,7 @@ import { GameState, Peg } from '../constants';
 import * as AT from '../actions/actionTypes';
 
 const EMPTY_CODE = Array(4).fill(Peg.UNSELECTED);
+const EMPTY_FEEDBACK_PEGS = [];
 
 const initialState = {
     gameState: GameState.INITIALISED,
@@ -29,10 +30,7 @@ export default (state = initialState, action) => {
                     {
                         active: true,
                         code: EMPTY_CODE,
-                        feedback: {
-                            blacks: 0,
-                            whites: 0
-                        }
+                        feedbackPegs: EMPTY_FEEDBACK_PEGS
                     }
                 ]
             };
@@ -84,10 +82,7 @@ export default (state = initialState, action) => {
                     {
                         active: true,
                         code: EMPTY_CODE,
-                        feedback: {
-                            blacks: action.feedback.blacks,
-                            whites: action.feedback.whites
-                        }
+                        feedbackPegs: action.feedbackPegs
                     }
                 ]
             };

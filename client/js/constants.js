@@ -11,7 +11,6 @@ export const Peg = {
 };
 
 export const FeedbackPeg = {
-    NONE: Symbol('none'),
     BLACK: Symbol('black'),
     WHITE: Symbol('white')
 };

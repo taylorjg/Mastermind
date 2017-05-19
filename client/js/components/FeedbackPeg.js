@@ -7,7 +7,6 @@ const FeedbackPeg = ({ index, feedbackPegs }) => {
     const src = FEEDBACK_PEG_TO_IMG_SRC[feedbackPeg];
     const alt = FEEDBACK_PEG_TO_IMG_ALT[feedbackPeg];
     return (
-        feedbackPeg !== FP.NONE &&
         <img
             className='feedbackPeg'
             src={src}

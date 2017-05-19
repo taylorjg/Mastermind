@@ -16,7 +16,7 @@ const GuessRow = ({
         <div className="row">
 
             <GuessNumber index={index}></GuessNumber>
-            <GuessFeedback feedback={guess.feedback}></GuessFeedback>
+            <GuessFeedback feedbackPegs={guess.feedbackPegs}></GuessFeedback>
 
             <GuessCode
                 readOnly={!guess.active}
@@ -41,10 +41,7 @@ GuessRow.propTypes = {
     guess: PropTypes.shape({
         active: PropTypes.bool.isRequired,
         code: PropTypes.arrayOf(PropTypes.symbol).isRequired,
-        feedback: PropTypes.shape({
-            blacks: PropTypes.number.isRequired,
-            whites: PropTypes.number.isRequired
-        }).isRequired
+        feedbackPegs: PropTypes.arrayOf(PropTypes.symbol).isRequired
     }).isRequired,
     onSetPeg: PropTypes.func.isRequired,
     onGuess: PropTypes.func.isRequired,

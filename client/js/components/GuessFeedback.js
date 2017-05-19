@@ -1,14 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FeedbackPeg as FP } from '../constants';
 import FeedbackPeg from './FeedbackPeg';
 
-const GuessFeedback = ({ feedback }) => {
-    const feedbackPegs = [].concat(
-        Array(feedback.blacks).fill(FP.BLACK),
-        Array(feedback.whites).fill(FP.WHITE),
-        Array(4 - feedback.blacks - feedback.whites).fill(FP.NONE)
-    );
+const GuessFeedback = ({ feedbackPegs }) => {
     return (
         <div className="col-md-2">
             {
@@ -25,10 +19,7 @@ const GuessFeedback = ({ feedback }) => {
 };
 
 GuessFeedback.propTypes = {
-    feedback: PropTypes.shape({
-        blacks: PropTypes.number.isRequired,
-        whites: PropTypes.number.isRequired
-    }).isRequired
+    feedbackPegs: PropTypes.arrayOf(PropTypes.symbol).isRequired
 };
 
 export default GuessFeedback;
