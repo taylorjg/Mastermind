@@ -6,12 +6,13 @@ const Peg = ({ index, code, onClick }) => {
     const peg = code[index];
     const src = PEG_TO_IMG_SRC[peg];
     const alt = PEG_TO_COLOUR_NAME[peg];
+    const direction = ev => ev.shiftKey ? PEG_TO_PREV_PEG : PEG_TO_NEXT_PEG;
     return (
         <img
             className='peg'
             src={src}
             alt={alt}
-            onClick={() => onClick && onClick(index, PEG_TO_NEXT_PEG[peg])}
+            onClick={ev => onClick && onClick(index, direction(ev)[peg])}
         >
         </img>);
 };
@@ -50,6 +51,16 @@ const PEG_TO_NEXT_PEG = {
     [P.YELLOW]: P.BLACK,
     [P.BLACK]: P.WHITE,
     [P.WHITE]: P.RED
+};
+
+const PEG_TO_PREV_PEG = {
+    [P.UNSELECTED]: P.WHITE,
+    [P.RED]: P.WHITE,
+    [P.GREEN]: P.RED,
+    [P.BLUE]: P.GREEN,
+    [P.YELLOW]: P.BLUE,
+    [P.BLACK]: P.YELLOW,
+    [P.WHITE]: P.BLACK
 };
 
 export default Peg;
