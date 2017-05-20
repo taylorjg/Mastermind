@@ -81,7 +81,7 @@ export default (state = initialState, action) => {
                         }),
                     {
                         active: true,
-                        code: EMPTY_CODE,
+                        code: state.guesses[state.guesses.length - 1].code,
                         feedbackPegs: action.feedbackPegs
                     }
                 ]
