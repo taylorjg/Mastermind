@@ -20,12 +20,7 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 gameState: GameState.IN_PROGRESS,
-                secret: [
-                    Peg.RED,
-                    Peg.YELLOW,
-                    Peg.GREEN,
-                    Peg.BLUE
-                ],
+                secret: action.secret,
                 guesses: [
                     {
                         active: true,

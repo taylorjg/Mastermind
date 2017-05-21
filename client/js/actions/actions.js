@@ -10,7 +10,6 @@ const randomSecret = () => {
         return peg !== Peg.UNSELECTED ? peg : chooseRandomPeg();
     };
     const secret = [0, 1, 2, 3].map(chooseRandomPeg);
-    console.log(`[randomSecret] secret: ${secret.map(x => x.valueOf().toString()).join()}`);
     return secret;
 }; 
 
