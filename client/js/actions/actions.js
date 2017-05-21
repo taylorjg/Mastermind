@@ -1,9 +1,22 @@
 import * as AT from './actionTypes';
-import { MAX_GUESSES, FeedbackPeg } from '../constants';
+import { MAX_GUESSES, Peg, FeedbackPeg } from '../constants';
 import { evaluateGuess} from '../logic';
 
+const randomSecret = () => {
+    const keys = Object.keys(Peg);
+    const chooseRandomPeg = () => {
+        const randomIndex = Math.floor((Math.random() * keys.length));
+        const peg = Peg[keys[randomIndex]];
+        return peg !== Peg.UNSELECTED ? peg : chooseRandomPeg();
+    };
+    const secret = [0, 1, 2, 3].map(chooseRandomPeg);
+    console.log(`[randomSecret] secret: ${secret.map(x => x.valueOf().toString()).join()}`);
+    return secret;
+}; 
+
 export const start = () => ({
-    type: AT.START
+    type: AT.START,
+    secret: randomSecret()
 });
 
 export const guess = guess =>
