@@ -63,7 +63,8 @@ export default (state = initialState, action) => {
                         {},
                         state.guesses[state.guesses.length - 1],
                         {
-                            active: false
+                            active: false,
+                            feedbackPegs: action.feedbackPegs
                         })
                 ]
             };
@@ -77,12 +78,13 @@ export default (state = initialState, action) => {
                         {},
                         state.guesses[state.guesses.length - 1],
                         {
-                            active: false
+                            active: false,
+                            feedbackPegs: action.feedbackPegs
                         }),
                     {
                         active: true,
                         code: state.guesses[state.guesses.length - 1].code,
-                        feedbackPegs: action.feedbackPegs
+                        feedbackPegs: EMPTY_FEEDBACK_PEGS
                     }
                 ]
             };
@@ -97,7 +99,8 @@ export default (state = initialState, action) => {
                         {},
                         state.guesses[state.guesses.length - 1],
                         {
-                            active: false
+                            active: false,
+                            feedbackPegs: action.feedbackPegs
                         })
                 ]
             };

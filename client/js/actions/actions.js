@@ -28,10 +28,10 @@ export const guess = guess =>
             Array(feedback.whites).fill(FeedbackPeg.WHITE)
         );
         if (feedback.blacks === 4) {
-            dispatch(correctGuess());
+            dispatch(correctGuess(feedbackPegs));
         } else {
             if (state.guesses.length === MAX_GUESSES) {
-                dispatch(exceededGuesses());
+                dispatch(exceededGuesses(feedbackPegs));
             } else {
                 dispatch(incorrectGuess(feedbackPegs));
             }
@@ -48,8 +48,9 @@ export const setPeg = (index, peg) => ({
     peg
 });
 
-export const correctGuess = () => ({
-    type: AT.CORRECT_GUESS
+export const correctGuess = feedbackPegs => ({
+    type: AT.CORRECT_GUESS,
+    feedbackPegs
 });
 
 export const incorrectGuess = feedbackPegs => ({
@@ -57,6 +58,7 @@ export const incorrectGuess = feedbackPegs => ({
     feedbackPegs
 });
 
-export const exceededGuesses = () => ({
-    type: AT.EXCEEDED_GUESSES
+export const exceededGuesses = feedbackPegs => ({
+    type: AT.EXCEEDED_GUESSES,
+    feedbackPegs
 });
