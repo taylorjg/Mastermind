@@ -7,6 +7,7 @@ import GuessButtons from './GuessButtons';
 
 const GuessRow = ({
     index,
+    active,
     guess,
     onSetPeg,
     onGuess,
@@ -19,14 +20,14 @@ const GuessRow = ({
             <GuessFeedback feedbackPegs={guess.feedbackPegs}></GuessFeedback>
 
             <GuessCode
-                readOnly={!guess.active}
+                readOnly={!active}
                 code={guess.code}
                 onSetPeg={onSetPeg}
             >
             </GuessCode>
             
             <GuessButtons
-                active={guess.active}
+                active={active}
                 code={guess.code}
                 onGuess={onGuess}
                 onClear={onClear}
@@ -38,8 +39,8 @@ const GuessRow = ({
 
 GuessRow.propTypes = {
     index: PropTypes.number.isRequired,
+    active: PropTypes.bool.isRequired,
     guess: PropTypes.shape({
-        active: PropTypes.bool.isRequired,
         code: PropTypes.arrayOf(PropTypes.symbol).isRequired,
         feedbackPegs: PropTypes.arrayOf(PropTypes.symbol).isRequired
     }).isRequired,
