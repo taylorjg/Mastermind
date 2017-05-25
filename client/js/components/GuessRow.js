@@ -13,7 +13,7 @@ const GuessRow = ({
     onClear
  }) => {
     return (
-        <div className="row">
+        <div className="row boardRow">
 
             <GuessNumber index={index}></GuessNumber>
             <GuessFeedback feedbackPegs={guess.feedbackPegs}></GuessFeedback>

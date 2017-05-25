@@ -7,18 +7,7 @@ body {
     color: #ffffff;
 }
 
-.peg {
-}
-
-.row {
-    padding: 20px;
-}
-
-.row div {
+.boardRow > div {
     line-height: 50px;
     vertical-align: middle;
-}
-
-button {
-    margin-top: 10px;
 }

@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Code from './Code';
-import Shield from './Shield';
 
 const SecretCode = ({ reveal, code }) => {
     return (
-        reveal
-            ? <Code readOnly={true} code={code}></Code>
-            : <Shield></Shield>
+        <div className="col-md-3">
+            { reveal && <Code readOnly={true} code={code}></Code> }
+        </div>
     );
 };
 
