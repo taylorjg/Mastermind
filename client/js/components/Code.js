@@ -4,9 +4,14 @@ import Peg from './Peg';
 
 const Code = ({
     readOnly,
+    hide,
     code,
     onSetPeg
 }) => {
+    const conditionalAttributes = {};
+    if (hide) {
+        conditionalAttributes.style = { visibility: 'hidden' };
+    }
     const makePeg = index => (
          <Peg
             index={index}
@@ -16,7 +21,7 @@ const Code = ({
         </Peg>
     );
     return (
-        <div>
+        <div {...conditionalAttributes}>
             {makePeg(0)}
             {" "}
             {makePeg(1)}
@@ -30,6 +35,7 @@ const Code = ({
 
 Code.propTypes = {
     readOnly: PropTypes.bool.isRequired,
+    hide: PropTypes.bool.isRequired,
     code: PropTypes.arrayOf(PropTypes.symbol).isRequired,
     onSetPeg: PropTypes.func
 };

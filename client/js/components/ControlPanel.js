@@ -5,7 +5,7 @@ import { GameState } from '../constants';
 const ControlPanel = ({ gameState, onStart }) => {
     const conditionalAttributes = {};
     if (gameState === GameState.IN_PROGRESS) {
-        conditionalAttributes.style = { visibility: 'hidden'};
+        conditionalAttributes.style = { visibility: 'hidden' };
     }
     return (
         <button

@@ -8,6 +8,7 @@ const GuessCode = ({ readOnly, code, onSetPeg }) => {
             <div className="col-md-3">
                 <Code
                     readOnly={readOnly}
+                    hide={false}
                     code={code}
                     onSetPeg={onSetPeg}
                 >
