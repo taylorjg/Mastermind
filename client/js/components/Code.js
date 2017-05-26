@@ -12,23 +12,18 @@ const Code = ({
     if (hide) {
         conditionalAttributes.style = { visibility: 'hidden' };
     }
-    const makePeg = index => (
-         <Peg
-            index={index}
-            code={code}
-            onClick={(index, peg) => !readOnly && onSetPeg(index, peg)}
-        >
-        </Peg>
-    );
     return (
         <div {...conditionalAttributes}>
-            {makePeg(0)}
-            {" "}
-            {makePeg(1)}
-            {" "}
-            {makePeg(2)}
-            {" "}
-            {makePeg(3)}
+            {
+                code.map((_, index) =>
+                    <Peg
+                        key={index}
+                        index={index}
+                        code={code}
+                        onClick={(index, peg) => !readOnly && onSetPeg && onSetPeg(index, peg)}
+                    >
+                    </Peg>)
+            }
         </div>
     );
 };

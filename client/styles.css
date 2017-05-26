@@ -11,3 +11,7 @@ body {
     line-height: 50px;
     vertical-align: middle;
 }
+
+.peg {
+    margin: 2px;
+}

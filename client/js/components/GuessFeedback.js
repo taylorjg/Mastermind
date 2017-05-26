@@ -6,7 +6,7 @@ const GuessFeedback = ({ feedbackPegs }) => {
     return (
         <div className="col-md-2">
             {
-                feedbackPegs.map((fp, index) =>
+                feedbackPegs.map((_, index) =>
                     <FeedbackPeg
                         key={index}
                         index={index}

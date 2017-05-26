@@ -29,7 +29,7 @@ export const guess = guess =>
         if (feedback.blacks === 4) {
             dispatch(correctGuess(feedbackPegs));
         } else {
-            if (state.activeGuess >= MAX_GUESSES - 1) {
+            if (state.activeGuessIndex >= MAX_GUESSES - 1) {
                 dispatch(exceededGuesses(feedbackPegs));
             } else {
                 dispatch(incorrectGuess(feedbackPegs));

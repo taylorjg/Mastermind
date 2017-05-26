@@ -40,7 +40,7 @@ class App extends Component {
                                 <GuessRow
                                     key={index}
                                     index={index}
-                                    active={index === props.activeGuess}
+                                    active={index === props.activeGuessIndex}
                                     guess={guess}
                                     onSetPeg={props.onSetPeg}
                                     onGuess={props.onGuess}
@@ -63,7 +63,7 @@ App.propTypes = {
         code: PropTypes.arrayOf(PropTypes.symbol).isRequired,
         feedbackPegs: PropTypes.arrayOf(PropTypes.symbol).isRequired
     })).isRequired,
-    activeGuess: PropTypes.number.isRequired,
+    activeGuessIndex: PropTypes.number.isRequired,
     onStart: PropTypes.func.isRequired,
     onSetPeg: PropTypes.func.isRequired,
     onGuess: PropTypes.func.isRequired,

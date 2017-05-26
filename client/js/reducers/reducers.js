@@ -8,12 +8,13 @@ const EMPTY_GUESS = {
     feedbackPegs: EMPTY_FEEDBACK_PEGS
 };
 const EMPTY_GUESSES = Array(MAX_GUESSES).fill(EMPTY_GUESS);
+const NO_ACTIVE_GUESS = -1;
 
 const initialState = {
     gameState: GameState.INITIALISED,
     secret: EMPTY_CODE,
     guesses: EMPTY_GUESSES,
-    activeGuess: -1
+    activeGuessIndex: NO_ACTIVE_GUESS
 };
 
 export default (state = initialState, action) => {
@@ -28,25 +29,25 @@ export default (state = initialState, action) => {
                 gameState: GameState.IN_PROGRESS,
                 secret: action.secret,
                 guesses: EMPTY_GUESSES,
-                activeGuess: 0
+                activeGuessIndex: 0
             };
 
         case AT.SET_PEG:
             return {
                 ...state,
                 guesses: [
-                    ...state.guesses.slice(0, state.activeGuess),
+                    ...state.guesses.slice(0, state.activeGuessIndex),
                     Object.assign(
                         {},
-                        state.guesses[state.activeGuess],
+                        state.guesses[state.activeGuessIndex],
                         {
                             code: [
-                                ...state.guesses[state.activeGuess].code.slice(0, action.index),
+                                ...state.guesses[state.activeGuessIndex].code.slice(0, action.index),
                                 action.peg,
-                                ...state.guesses[state.activeGuess].code.slice(action.index + 1),
+                                ...state.guesses[state.activeGuessIndex].code.slice(action.index + 1),
                             ]
                         }),
-                    ...state.guesses.slice(state.activeGuess + 1),
+                    ...state.guesses.slice(state.activeGuessIndex + 1),
                 ]
             };
 
@@ -55,38 +56,38 @@ export default (state = initialState, action) => {
                 ...state,
                 gameState: GameState.WON,
                 guesses: [
-                    ...state.guesses.slice(0, state.activeGuess),
+                    ...state.guesses.slice(0, state.activeGuessIndex),
                     Object.assign(
                         {},
-                        state.guesses[state.activeGuess],
+                        state.guesses[state.activeGuessIndex],
                         {
                             feedbackPegs: action.feedbackPegs
                         }),
-                    ...state.guesses.slice(state.activeGuess + 1)
+                    ...state.guesses.slice(state.activeGuessIndex + 1)
                 ],
-                activeGuess: -1
+                activeGuessIndex: NO_ACTIVE_GUESS
             };
 
         case AT.INCORRECT_GUESS:
             return {
                 ...state,
                 guesses: [
-                    ...state.guesses.slice(0, state.activeGuess),
+                    ...state.guesses.slice(0, state.activeGuessIndex),
                     Object.assign(
                         {},
-                        state.guesses[state.activeGuess],
+                        state.guesses[state.activeGuessIndex],
                         {
                             feedbackPegs: action.feedbackPegs
                         }),
                     Object.assign(
                         {},
-                        state.guesses[state.activeGuess + 1],
+                        state.guesses[state.activeGuessIndex + 1],
                         {
-                            code: state.guesses[state.activeGuess].code
+                            code: state.guesses[state.activeGuessIndex].code
                         }),
-                    ...state.guesses.slice(state.activeGuess + 2)
+                    ...state.guesses.slice(state.activeGuessIndex + 2)
                 ],
-                activeGuess: state.activeGuess + 1
+                activeGuessIndex: state.activeGuessIndex + 1
             };
 
         case AT.EXCEEDED_GUESSES:
@@ -94,29 +95,29 @@ export default (state = initialState, action) => {
                 ...state,
                 gameState: GameState.LOST,
                 guesses: [
-                    ...state.guesses.slice(0, state.activeGuess),
+                    ...state.guesses.slice(0, state.activeGuessIndex),
                     Object.assign(
                         {},
-                        state.guesses[state.activeGuess],
+                        state.guesses[state.activeGuessIndex],
                         {
                             feedbackPegs: action.feedbackPegs
                         })
                 ],
-                activeGuess: -1
+                activeGuessIndex: NO_ACTIVE_GUESS
             };
 
         case AT.CLEAR:
             return {
                 ...state,
                 guesses: [
-                    ...state.guesses.slice(0, state.activeGuess),
+                    ...state.guesses.slice(0, state.activeGuessIndex),
                     Object.assign(
                         {},
-                        state.guesses[state.activeGuess],
+                        state.guesses[state.activeGuessIndex],
                         {
                             code: EMPTY_CODE
                         }),
-                    ...state.guesses.slice(state.activeGuess + 1)
+                    ...state.guesses.slice(state.activeGuessIndex + 1)
                 ]
             };
 
