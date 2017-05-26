@@ -14,7 +14,7 @@ const SecretCode = ({ reveal, code }) => {
     }
     return (
         <div className="col-md-3" {...conditionalAttributes}>
-            <Code readOnly={true} hide={!reveal} code={code}></Code>
+            <Code active={false} hide={!reveal} code={code}></Code>
         </div>
     );
 };

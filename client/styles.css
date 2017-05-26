@@ -15,3 +15,7 @@ body {
 .peg {
     margin: 2px;
 }
+
+.peg.active {
+    cursor: pointer;
+}

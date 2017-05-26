@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Peg from './Peg';
 
 const Code = ({
-    readOnly,
+    active,
     hide,
     code,
     onSetPeg
@@ -18,9 +18,10 @@ const Code = ({
                 code.map((_, index) =>
                     <Peg
                         key={index}
+                        active={active}
                         index={index}
                         code={code}
-                        onClick={(index, peg) => !readOnly && onSetPeg && onSetPeg(index, peg)}
+                        onClick={(index, peg) => active && onSetPeg && onSetPeg(index, peg)}
                     >
                     </Peg>)
             }
@@ -29,7 +30,7 @@ const Code = ({
 };
 
 Code.propTypes = {
-    readOnly: PropTypes.bool.isRequired,
+    active: PropTypes.bool.isRequired,
     hide: PropTypes.bool.isRequired,
     code: PropTypes.arrayOf(PropTypes.symbol).isRequired,
     onSetPeg: PropTypes.func

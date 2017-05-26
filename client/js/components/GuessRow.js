@@ -20,7 +20,7 @@ const GuessRow = ({
             <GuessFeedback feedbackPegs={guess.feedbackPegs}></GuessFeedback>
 
             <GuessCode
-                readOnly={!active}
+                active={active}
                 code={guess.code}
                 onSetPeg={onSetPeg}
             >

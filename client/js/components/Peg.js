@@ -2,22 +2,29 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Peg as P } from '../constants';
 
-const Peg = ({ index, code, onClick }) => {
+const Peg = ({
+    active,
+    index,
+    code,
+    onClick
+}) => {
     const peg = code[index];
     const src = PEG_TO_IMG_SRC[peg];
     const alt = PEG_TO_COLOUR_NAME[peg];
     const direction = ev => ev.shiftKey ? PEG_TO_PREV_PEG : PEG_TO_NEXT_PEG;
+    const classNames = ['peg'].concat(active ? ['active'] : []);
     return (
         <img
-            className='peg'
+            className={classNames.join(' ')}
             src={src}
             alt={alt}
-            onClick={ev => onClick && onClick(index, direction(ev)[peg])}
+            onClick={ev => active && onClick && onClick(index, direction(ev)[peg])}
         >
         </img>);
 };
 
 Peg.propTypes = {
+    active: PropTypes.bool.isRequired,
     index: PropTypes.number.isRequired,
     code: PropTypes.arrayOf(PropTypes.symbol).isRequired,
     onClick: PropTypes.func.isRequired

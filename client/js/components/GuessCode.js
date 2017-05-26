@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Code from './Code';
 
-const GuessCode = ({ readOnly, code, onSetPeg }) => {
+const GuessCode = ({ active, code, onSetPeg }) => {
     return (
         <div>
             <div className="col-md-3">
                 <Code
-                    readOnly={readOnly}
+                    active={active}
                     hide={false}
                     code={code}
                     onSetPeg={onSetPeg}
@@ -19,7 +19,7 @@ const GuessCode = ({ readOnly, code, onSetPeg }) => {
 };
 
 GuessCode.propTypes = {
-    readOnly: PropTypes.bool.isRequired,
+    active: PropTypes.bool.isRequired,
     code: PropTypes.arrayOf(PropTypes.symbol).isRequired,
     onSetPeg: PropTypes.func
 };
