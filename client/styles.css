@@ -7,6 +7,10 @@ body {
     color: #ffffff;
 }
 
+.divider {
+    border-bottom: 3px solid #cc6600;
+}
+
 .boardRow > div {
     line-height: 50px;
     vertical-align: middle;

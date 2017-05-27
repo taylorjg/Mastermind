@@ -31,9 +31,11 @@ class App extends Component {
                             </div>
                         </div>
                         <div className="row boardRow">
-                            <div className="col-md-1"></div>
-                            <div className="col-md-2"></div>
                             <SecretCode code={props.secret} reveal={reveal}></SecretCode>
+                        </div>
+                        <div className="row boardRow">
+                            <div className="col-md-offset-3 col-md-3 divider">
+                            </div>
                         </div>
                         {
                             props.guesses.map((guess, index) =>
