@@ -14,43 +14,42 @@ class App extends Component {
         return (
             <div className="container">
                 <div className="row">
-                    <div className="col-md-12">
+                    <div className="col-xs-12">
                         <span className="pull-right">version: <i>{props.version}</i></span>
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-md-12">
+                    <div className="col-xs-12">
                         <hr />
                     </div>
                 </div>
-                <div className="row">
-                    <div id="board" className="col-md-offset-3 col-md-6">
-                        <div className="row boardRow">
-                            <div className="col-md-12">
-                                <ControlPanel gameState={props.gameState} onStart={props.onStart}></ControlPanel>
-                            </div>
+                <div id="board">
+                    <div className="row boardRow">
+                        <div className="col-xs-offset-1 col-xs-11">
+                            <ControlPanel gameState={props.gameState} onStart={props.onStart}></ControlPanel>
                         </div>
-                        <div className="row boardRow">
-                            <SecretCode code={props.secret} reveal={reveal}></SecretCode>
-                        </div>
-                        <div className="row boardRow">
-                            <div className="col-md-offset-3 col-md-3 divider">
-                            </div>
-                        </div>
-                        {
-                            props.guesses.map((guess, index) =>
-                                <GuessRow
-                                    key={index}
-                                    index={index}
-                                    active={index === props.activeGuessIndex}
-                                    guess={guess}
-                                    onSetPeg={props.onSetPeg}
-                                    onGuess={props.onGuess}
-                                    onClear={props.onClear}
-                                >
-                                </GuessRow>)
-                        }
                     </div>
+                    <div className="row boardRow">
+                        <SecretCode code={props.secret} reveal={reveal}></SecretCode>
+                    </div>
+                    <div className="row boardRow">
+                        <div className="col-xs-offset-4 col-xs-3 divider">
+                        </div>
+                    </div>
+                    {
+                        props.guesses.map((guess, index) =>
+                            <GuessRow
+                                key={index}
+                                index={index}
+                                active={index === props.activeGuessIndex}
+                                guess={guess}
+                                onSetPeg={props.onSetPeg}
+                                onGuess={props.onGuess}
+                                onClear={props.onClear}
+                            >
+                            </GuessRow>)
+                    }
+
                 </div>
             </div>
         );

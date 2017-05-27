@@ -18,14 +18,15 @@ const GuessButtons = ({
         conditionalAttributesClear.disabled = true;
     }
     return (
-        <div className="col-md-3">
+        <div className="col-xs-3">
             {
                 active &&
                 <button
                     className="btn btn-sm btn-info"
                     {...conditionalAttributesSubmit}
                     onClick={() => onGuess(code)}
-                >Submit
+                >
+                    <span className="glyphicon glyphicon-ok" aria-hidden="true"></span>                
                 </button>
             }
             {
@@ -34,7 +35,8 @@ const GuessButtons = ({
                     className="btn btn-sm btn-danger"
                     {...conditionalAttributesClear}
                     onClick={onClear}
-                >Clear
+                >
+                    <span className="glyphicon glyphicon-trash" aria-hidden="true"></span>                
                 </button>
             }
         </div>

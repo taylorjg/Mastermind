@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 const GuessNumber = ({ index }) => {
     return (
-        <div className="col-md-1">
+        <div className="col-xs-offset-1 col-xs-1">
             <span>{index + 1}</span>
         </div>
     );
