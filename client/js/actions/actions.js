@@ -37,10 +37,6 @@ export const guess = guess =>
         }
     };
 
-export const clear = () => ({
-    type: AT.CLEAR
-});
-
 export const setPeg = (index, peg) => ({
     type: AT.SET_PEG,
     index,

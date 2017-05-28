@@ -5,20 +5,15 @@ import { Peg } from '../constants';
 const GuessButtons = ({
     active,
     code,
-    onGuess,
-    onClear
+    onGuess
 }) => {
     const unselected = peg => peg === Peg.UNSELECTED;
     const conditionalAttributesSubmit = {};
     if (code.some(unselected)) {
         conditionalAttributesSubmit.disabled = true;
     }
-    const conditionalAttributesClear = {};
-    if (code.every(unselected)) {
-        conditionalAttributesClear.disabled = true;
-    }
     return (
-        <div className="col-xs-3">
+        <div className="col-xs-1">
             {
                 active &&
                 <button
@@ -29,16 +24,6 @@ const GuessButtons = ({
                     <span className="glyphicon glyphicon-ok" aria-hidden="true"></span>                
                 </button>
             }
-            {
-                active &&
-                <button
-                    className="btn btn-sm btn-danger"
-                    {...conditionalAttributesClear}
-                    onClick={onClear}
-                >
-                    <span className="glyphicon glyphicon-trash" aria-hidden="true"></span>                
-                </button>
-            }
         </div>
     );
 };
@@ -46,8 +31,7 @@ const GuessButtons = ({
 GuessButtons.propTypes = {
     active: PropTypes.bool.isRequired,
     code: PropTypes.arrayOf(PropTypes.symbol).isRequired,
-    onGuess: PropTypes.func.isRequired,
-    onClear: PropTypes.func.isRequired
+    onGuess: PropTypes.func.isRequired
 };
 
 export default GuessButtons;

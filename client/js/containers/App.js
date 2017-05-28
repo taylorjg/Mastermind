@@ -25,15 +25,17 @@ class App extends Component {
                 </div>
                 <div id="board">
                     <div className="row boardRow">
-                        <div className="col-xs-offset-1 col-xs-11">
+                        <div className="col-xs-12">
                             <ControlPanel gameState={props.gameState} onStart={props.onStart}></ControlPanel>
                         </div>
                     </div>
                     <div className="row boardRow">
+                        <div className="col-xs-3"></div>
                         <SecretCode code={props.secret} reveal={reveal}></SecretCode>
                     </div>
                     <div className="row boardRow">
-                        <div className="col-xs-offset-4 col-xs-3 divider">
+                        <div className="col-xs-3"></div>
+                        <div className="col-xs-3 divider">
                         </div>
                     </div>
                     {
@@ -45,7 +47,6 @@ class App extends Component {
                                 guess={guess}
                                 onSetPeg={props.onSetPeg}
                                 onGuess={props.onGuess}
-                                onClear={props.onClear}
                             >
                             </GuessRow>)
                     }
@@ -67,8 +68,7 @@ App.propTypes = {
     activeGuessIndex: PropTypes.number.isRequired,
     onStart: PropTypes.func.isRequired,
     onSetPeg: PropTypes.func.isRequired,
-    onGuess: PropTypes.func.isRequired,
-    onClear: PropTypes.func.isRequired
+    onGuess: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => state;
@@ -76,8 +76,7 @@ const mapStateToProps = state => state;
 const mapDispatchToProps = dispatch => ({
     onStart: () => dispatch(actions.start()),
     onSetPeg: (index, peg) => dispatch(actions.setPeg(index, peg)),
-    onGuess: code => dispatch(actions.guess(code)),
-    onClear: () => dispatch(actions.clear())
+    onGuess: code => dispatch(actions.guess(code))
 });
 
 export default connect(

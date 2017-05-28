@@ -46,4 +46,10 @@ describe('logic', () => {
         expect(actual.blacks).to.equal(0);
         expect(actual.whites).to.equal(3);
     });
+
+    it('bug - should be 1 black and 2 white but was getting 3 white', () => {
+        const actual = evaluateGuess([B, Y, WH, WH], [B, WH, Y, Y]);
+        expect(actual.blacks).to.equal(1);
+        expect(actual.whites).to.equal(2);
+    });
 });

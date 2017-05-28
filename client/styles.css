@@ -9,11 +9,20 @@ body {
 
 .divider {
     border-bottom: 3px solid #cc6600;
+    margin-top: 10px;
 }
 
 .boardRow > div {
-    line-height: 50px;
+    line-height: 60px;
     vertical-align: middle;
+}
+
+.boardRow > div:first-of-type {
+    padding-left: 25px;
+}
+
+.my-centre {
+    text-align: center;
 }
 
 .peg {

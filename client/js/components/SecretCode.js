@@ -13,7 +13,7 @@ const SecretCode = ({ reveal, code }) => {
         };
     }
     return (
-        <div className="col-xs-offset-4 col-xs-3" {...conditionalAttributes}>
+        <div className="col-xs-3 my-centre" {...conditionalAttributes}>
             <Code active={false} hide={!reveal} code={code}></Code>
         </div>
     );

@@ -4,16 +4,14 @@ import Code from './Code';
 
 const GuessCode = ({ active, code, onSetPeg }) => {
     return (
-        <div>
-            <div className="col-xs-3">
-                <Code
-                    active={active}
-                    hide={false}
-                    code={code}
-                    onSetPeg={onSetPeg}
-                >
-                </Code>
-            </div>
+        <div className="col-xs-3 my-centre">
+            <Code
+                active={active}
+                hide={false}
+                code={code}
+                onSetPeg={onSetPeg}
+            >
+            </Code>
         </div>
     );
 };

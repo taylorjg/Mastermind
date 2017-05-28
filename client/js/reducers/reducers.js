@@ -75,16 +75,6 @@ export default (state = initialState, action) => {
                 activeGuessIndex: NO_ACTIVE_GUESS
             };
 
-        case AT.CLEAR:
-            return {
-                ...state,
-                guesses: [
-                    ...state.guesses.slice(0, state.activeGuessIndex),
-                    state.guesses[state.activeGuessIndex].updateCode(EMPTY_CODE),
-                    ...state.guesses.slice(state.activeGuessIndex + 1)
-                ]
-            };
-
         default:
             return state;
     }

@@ -10,8 +10,7 @@ const GuessRow = ({
     active,
     guess,
     onSetPeg,
-    onGuess,
-    onClear
+    onGuess
  }) => {
     return (
         <div className="row boardRow">
@@ -30,7 +29,6 @@ const GuessRow = ({
                 active={active}
                 code={guess.code}
                 onGuess={onGuess}
-                onClear={onClear}
             >
             </GuessButtons>
         </div>
@@ -45,8 +43,7 @@ GuessRow.propTypes = {
         feedbackPegs: PropTypes.arrayOf(PropTypes.symbol).isRequired
     }).isRequired,
     onSetPeg: PropTypes.func.isRequired,
-    onGuess: PropTypes.func.isRequired,
-    onClear: PropTypes.func.isRequired
+    onGuess: PropTypes.func.isRequired
 };
 
 export default GuessRow;
