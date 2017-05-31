@@ -21,7 +21,7 @@ const GuessButtons = ({
                     {...conditionalAttributesSubmit}
                     onClick={() => onGuess(code)}
                 >
-                    <span className="glyphicon glyphicon-ok" aria-hidden="true"></span>                
+                    <span className="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>                
                 </button>
             }
         </div>

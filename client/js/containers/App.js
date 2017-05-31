@@ -6,6 +6,7 @@ import { GameState } from '../constants';
 import ControlPanel from '../components/ControlPanel';
 import SecretCode from '../components/SecretCode';
 import GuessRow from '../components/GuessRow';
+import { MAX_GUESSES } from '../constants';
 
 class App extends Component {
     render() {
@@ -39,11 +40,11 @@ class App extends Component {
                         </div>
                     </div>
                     {
-                        props.guesses.map((guess, index) =>
+                        props.guesses.slice().reverse().map((guess, index) =>
                             <GuessRow
-                                key={index}
-                                index={index}
-                                active={index === props.activeGuessIndex}
+                                key={MAX_GUESSES - index - 1}
+                                index={MAX_GUESSES - index - 1}
+                                active={MAX_GUESSES - index - 1 === props.activeGuessIndex}
                                 guess={guess}
                                 onSetPeg={props.onSetPeg}
                                 onGuess={props.onGuess}
