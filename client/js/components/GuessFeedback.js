@@ -4,7 +4,7 @@ import FeedbackPeg from './FeedbackPeg';
 
 const GuessFeedback = ({ feedbackPegs }) => {
     return (
-        <div className="col-xs-2">
+        <div className="col-xs-3">
             {
                 feedbackPegs.map((_, index) =>
                     <FeedbackPeg
