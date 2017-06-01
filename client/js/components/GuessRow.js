@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import GuessNumber from './GuessNumber';
 import GuessFeedback from './GuessFeedback';
 import GuessCode from './GuessCode';
-import GuessButtons from './GuessButtons';
 
 const GuessRow = ({
     index,
@@ -15,8 +14,18 @@ const GuessRow = ({
     return (
         <div className="row boardRow">
 
-            <GuessNumber index={index}></GuessNumber>
-            <GuessFeedback feedbackPegs={guess.feedbackPegs}></GuessFeedback>
+            <GuessNumber
+                index={index}
+            >
+            </GuessNumber>
+
+            <GuessFeedback
+                active={active}
+                feedbackPegs={guess.feedbackPegs}
+                code={guess.code}
+                onGuess={onGuess}
+            >
+            </GuessFeedback>
 
             <GuessCode
                 active={active}
@@ -24,13 +33,6 @@ const GuessRow = ({
                 onSetPeg={onSetPeg}
             >
             </GuessCode>
-            
-            <GuessButtons
-                active={active}
-                code={guess.code}
-                onGuess={onGuess}
-            >
-            </GuessButtons>
         </div>
     );
 };

@@ -40,18 +40,19 @@ class App extends Component {
                         </div>
                     </div>
                     {
-                        props.guesses.slice().reverse().map((guess, index) =>
-                            <GuessRow
-                                key={MAX_GUESSES - index - 1}
-                                index={MAX_GUESSES - index - 1}
-                                active={MAX_GUESSES - index - 1 === props.activeGuessIndex}
+                        props.guesses.slice().reverse().map((guess, reverseIndex) => {
+                            const index = MAX_GUESSES - 1 - reverseIndex;
+                            return <GuessRow
+                                key={index}
+                                index={index}
+                                active={index === props.activeGuessIndex}
                                 guess={guess}
                                 onSetPeg={props.onSetPeg}
                                 onGuess={props.onGuess}
                             >
-                            </GuessRow>)
+                            </GuessRow>;
+                        })
                     }
-
                 </div>
             </div>
         );
