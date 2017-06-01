@@ -1,5 +1,6 @@
 export const START = 'START';
 export const GUESS = 'GUESS';
+export const AUTO_GUESS = 'AUTO_GUESS';
 export const SET_PEG = 'SET_PEG';
 export const CORRECT_GUESS = 'CORRECT_GUESS';
 export const INCORRECT_GUESS = 'INCORRECT_GUESS';

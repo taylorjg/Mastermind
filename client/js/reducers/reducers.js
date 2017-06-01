@@ -1,6 +1,7 @@
 import { MAX_GUESSES, GameState, Peg } from '../constants';
 import * as AT from '../actions/actionTypes';
 import Guess from '../models/guess';
+import { initialAutoSolveSet } from '../logic';
 
 const EMPTY_CODE = Array(4).fill(Peg.UNSELECTED);
 const EMPTY_FEEDBACK_PEGS = [];
@@ -8,7 +9,11 @@ const EMPTY_GUESS = new Guess(EMPTY_CODE, EMPTY_FEEDBACK_PEGS);
 const EMPTY_GUESSES = Array(MAX_GUESSES).fill(EMPTY_GUESS);
 const NO_ACTIVE_GUESS = -1;
 
+const autoSolveMode = window.location.search.includes("autosolve");
+
 const initialState = {
+    autoSolveMode,
+    autoSolveSet: autoSolveMode ? initialAutoSolveSet() : [],
     gameState: GameState.INITIALISED,
     secret: EMPTY_CODE,
     guesses: EMPTY_GUESSES,

@@ -1,6 +1,6 @@
 import * as AT from './actionTypes';
 import { MAX_GUESSES, Peg, FeedbackPeg } from '../constants';
-import { evaluateGuess} from '../logic';
+import { evaluateGuess, generateGuess } from '../logic';
 
 const randomSecret = () => {
     const keys = Object.keys(Peg);
@@ -21,21 +21,32 @@ export const start = () => ({
 export const guess = guess =>
     (dispatch, getState) => {
         const state = getState();
-        const feedback = evaluateGuess(state.secret, guess);
-        const feedbackPegs = [].concat(
-            Array(feedback.blacks).fill(FeedbackPeg.BLACK),
-            Array(feedback.whites).fill(FeedbackPeg.WHITE)
-        );
-        if (feedback.blacks === 4) {
-            dispatch(correctGuess(feedbackPegs));
-        } else {
-            if (state.activeGuessIndex >= MAX_GUESSES - 1) {
-                dispatch(exceededGuesses(feedbackPegs));
-            } else {
-                dispatch(incorrectGuess(feedbackPegs));
-            }
-        }
+        commonGuessEvaluation(dispatch, state, guess);
     };
+
+export const autoGuess = () =>
+    (dispatch, getState) => {
+        const state = getState();
+        const { guess } = generateGuess(state.autoSolveSet);
+        commonGuessEvaluation(dispatch, state, guess);
+    };
+
+const commonGuessEvaluation = (dispatch, state, guess) => {
+    const feedback = evaluateGuess(state.secret, guess);
+    const feedbackPegs = [].concat(
+        Array(feedback.blacks).fill(FeedbackPeg.BLACK),
+        Array(feedback.whites).fill(FeedbackPeg.WHITE)
+    );
+    if (feedback.blacks === 4) {
+        dispatch(correctGuess(feedbackPegs));
+    } else {
+        if (state.activeGuessIndex >= MAX_GUESSES - 1) {
+            dispatch(exceededGuesses(feedbackPegs));
+        } else {
+            dispatch(incorrectGuess(feedbackPegs));
+        }
+    }
+};
 
 export const setPeg = (index, peg) => ({
     type: AT.SET_PEG,
