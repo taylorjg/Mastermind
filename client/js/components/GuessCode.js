@@ -4,7 +4,7 @@ import Code from './Code';
 
 const GuessCode = ({ active, code, onSetPeg }) => {
     return (
-        <div className="col-xs-3 my-centre">
+        <div className="col-xs-4 col-md-3 my-centre">
             <Code
                 active={active}
                 hide={false}

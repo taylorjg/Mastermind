@@ -29,7 +29,7 @@ class App extends Component {
                     </div>
                     <div className="row boardRow">
                         <div className="col-xs-2"></div>
-                        <div className="col-xs-3 divider">
+                        <div className="col-xs-4 col-md-3 divider">
                         </div>
                     </div>
                     {
