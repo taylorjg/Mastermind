@@ -13,13 +13,13 @@ body {
 }
 
 .boardRow > div {
-    line-height: 128px;
+    line-height: 64px;
     vertical-align: middle;
 }
 
 .boardRow > div:first-of-type {
     padding-left: 25px;
-    font-size: 24px;
+    font-size: 16px;
 }
 
 .my-centre {
@@ -27,7 +27,7 @@ body {
 }
 
 .peg {
-    margin: 10px;
+    margin: 4px;
 }
 
 .peg.active {

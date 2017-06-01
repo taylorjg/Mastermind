@@ -15,7 +15,7 @@ const GuessFeedback = ({
         conditionalAttributesSubmit.disabled = true;
     }
     return (
-        <div className="col-xs-3">
+        <div className="col-xs-1">
             {
                 active
                     ? <button

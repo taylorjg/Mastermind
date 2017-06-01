@@ -58,8 +58,7 @@ export default (state = initialState, action) => {
                 guesses: [
                     ...state.guesses.slice(0, state.activeGuessIndex),
                     state.guesses[state.activeGuessIndex].updateFeedbackPegs(action.feedbackPegs),
-                    state.guesses[state.activeGuessIndex + 1].updateCode(state.guesses[state.activeGuessIndex].code),
-                    ...state.guesses.slice(state.activeGuessIndex + 2)
+                    ...state.guesses.slice(state.activeGuessIndex + 1)
                 ],
                 activeGuessIndex: state.activeGuessIndex + 1
             };

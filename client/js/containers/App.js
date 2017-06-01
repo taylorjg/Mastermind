@@ -14,29 +14,22 @@ class App extends Component {
         const reveal = props.gameState !== GameState.IN_PROGRESS;
         return (
             <div className="container-fluid">
-                <div className="row">
-                    <div className="col-xs-12">
-                        <span className="pull-right">version: <i>{props.version}</i></span>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col-xs-12">
-                        <hr />
-                    </div>
-                </div>
                 <div>
                     <div className="row boardRow">
-                        <div className="col-xs-12">
+                        <div className="col-xs-1">
                             <ControlPanel gameState={props.gameState} onStart={props.onStart}></ControlPanel>
+                        </div>
+                        <div className="col-xs-11">
+                            <span className="pull-right">version: <i>{props.version}</i></span>
                         </div>
                     </div>
                     <div className="row boardRow">
-                        <div className="col-xs-4"></div>
+                        <div className="col-xs-2"></div>
                         <SecretCode code={props.secret} reveal={reveal}></SecretCode>
                     </div>
                     <div className="row boardRow">
-                        <div className="col-xs-4"></div>
-                        <div className="col-xs-7 divider">
+                        <div className="col-xs-2"></div>
+                        <div className="col-xs-3 divider">
                         </div>
                     </div>
                     {
