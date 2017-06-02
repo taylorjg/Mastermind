@@ -58,10 +58,11 @@ describe('logic', () => {
         expect(actual).to.have.length.of(1296);
     });
 
-    it('generateGuess with no previous guess', () => {
+    it('generateGuess with no previous guesses', () => {
         const autoSolveSet = initialAutoSolveSet();
-        const actual = generateGuess(autoSolveSet, null, null);
+        const actual = generateGuess(autoSolveSet, [], null, null);
         expect(actual.guess).to.deep.equal([R, R, G, G]);
-        expect(actual.autoSolveSet).to.have.length.of(1295);
+        expect(actual.autoSolveSet).to.deep.equal(autoSolveSet);
+        expect(actual.autoSolveUsed).to.deep.equal([[R, R, G, G]]);
     });
 });

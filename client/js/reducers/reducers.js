@@ -14,6 +14,7 @@ const autoSolveMode = window.location.search.includes("autosolve");
 const initialState = {
     autoSolveMode,
     autoSolveSet: autoSolveMode ? initialAutoSolveSet() : [],
+    autoSolveUsed: [],
     gameState: GameState.INITIALISED,
     secret: EMPTY_CODE,
     guesses: EMPTY_GUESSES,
@@ -30,6 +31,8 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 gameState: GameState.IN_PROGRESS,
+                autoSolveSet: autoSolveMode ? initialAutoSolveSet() : [],
+                autoSolveUsed: [],
                 secret: action.secret,
                 guesses: EMPTY_GUESSES,
                 activeGuessIndex: 0
@@ -49,6 +52,7 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 autoSolveSet: action.generatedGuess.autoSolveSet,
+                autoSolveUsed: action.generatedGuess.autoSolveUsed,
                 guesses: [
                     ...state.guesses.slice(0, state.activeGuessIndex),
                     state.guesses[state.activeGuessIndex].updateCode(action.generatedGuess.guess),

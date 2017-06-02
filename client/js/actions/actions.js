@@ -48,7 +48,7 @@ export const autoGuess = () =>
         const code = lastGuess ? lastGuess.code : null;
         const feedbackPegs = lastGuess ? lastGuess.feedbackPegs : null;
         const feedback = feedbackPegs ? feedbackPegsToFeedback(feedbackPegs) : null;
-        const generatedGuess = generateGuess(state.autoSolveSet, code, feedback);
+        const generatedGuess = generateGuess(state.autoSolveSet, state.autoSolveUsed, code, feedback);
         dispatch(setGeneratedGuess(generatedGuess));
         dispatch(guess());
     };
