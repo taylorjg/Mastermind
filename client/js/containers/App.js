@@ -39,6 +39,7 @@ class App extends Component {
                                 key={index}
                                 index={index}
                                 active={index === props.activeGuessIndex}
+                                autoSolveMode={props.autoSolveMode}
                                 guess={guess}
                                 onSetPeg={props.onSetPeg}
                                 onGuess={props.autoSolveMode ? props.onAutoGuess : props.onGuess}

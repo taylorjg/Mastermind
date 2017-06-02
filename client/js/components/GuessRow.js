@@ -7,6 +7,7 @@ import GuessCode from './GuessCode';
 const GuessRow = ({
     index,
     active,
+    autoSolveMode,
     guess,
     onSetPeg,
     onGuess
@@ -21,6 +22,7 @@ const GuessRow = ({
 
             <GuessFeedback
                 active={active}
+                autoSolveMode={autoSolveMode}
                 feedbackPegs={guess.feedbackPegs}
                 code={guess.code}
                 onGuess={onGuess}
@@ -28,7 +30,7 @@ const GuessRow = ({
             </GuessFeedback>
 
             <GuessCode
-                active={active}
+                active={active && !autoSolveMode}
                 code={guess.code}
                 onSetPeg={onSetPeg}
             >
@@ -40,6 +42,7 @@ const GuessRow = ({
 GuessRow.propTypes = {
     index: PropTypes.number.isRequired,
     active: PropTypes.bool.isRequired,
+    autoSolveMode: PropTypes.bool.isRequired,
     guess: PropTypes.shape({
         code: PropTypes.arrayOf(PropTypes.symbol).isRequired,
         feedbackPegs: PropTypes.arrayOf(PropTypes.symbol).isRequired

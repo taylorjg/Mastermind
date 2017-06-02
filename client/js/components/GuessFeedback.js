@@ -5,14 +5,15 @@ import { Peg } from '../constants';
 
 const GuessFeedback = ({
     active,
+    autoSolveMode,
     feedbackPegs,
     code,
     onGuess
 }) => {
     const unselected = peg => peg === Peg.UNSELECTED;
     const conditionalAttributesSubmit = {};
-    if (code.some(unselected)) {
-        // conditionalAttributesSubmit.disabled = true;
+    if (code.some(unselected) && !autoSolveMode) {
+        conditionalAttributesSubmit.disabled = true;
     }
     return (
         <div className="col-xs-1">
@@ -39,6 +40,7 @@ const GuessFeedback = ({
 
 GuessFeedback.propTypes = {
     active: PropTypes.bool.isRequired,
+    autoSolveMode: PropTypes.bool.isRequired,
     feedbackPegs: PropTypes.arrayOf(PropTypes.symbol).isRequired,
     code: PropTypes.arrayOf(PropTypes.symbol).isRequired,
     onGuess: PropTypes.func.isRequired
