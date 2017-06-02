@@ -1,3 +1,4 @@
+import 'babel-polyfill';
 import { expect } from 'chai';
 import { evaluateGuess, initialAutoSolveSet, generateGuess } from '../js/logic';
 import { Peg } from '../js/constants';

@@ -1,49 +1,38 @@
 import { Peg } from '../constants';
 
+const PEGS = [
+    Peg.RED,
+    Peg.GREEN,
+    Peg.BLUE,
+    Peg.YELLOW,
+    Peg.BLACK,
+    Peg.WHITE
+];
+
 export const evaluateGuess = (secret, guess) => {
-    const pairs = secret.map((item, index) => [item, guess[index]]);
-    const matchingPairs = pairs.filter(([item1, item2]) => item1 === item2);
-    const remainingPairs = pairs.filter(([item1, item2]) => item1 !== item2);
-    const remainingSecretPegs = remainingPairs.map(pair => pair[0]);
-    const remainingGuessPegs = remainingPairs.map(pair => pair[1]);
-    const seed = { total: 0, done: []};
-    const acc = remainingGuessPegs.reduce((acc, el) => {
-        if (acc.done.includes(el)) return acc;
-        const ns = remainingSecretPegs.filter(peg => peg === el).length;
-        const ng = remainingGuessPegs.filter(peg => peg === el).length;
-        const total = acc.total + Math.min(ns, ng);
-        const done = acc.done.slice();
-        done.push(el);
-        return { total, done };
-    }, seed);
-    return {
-        blacks: matchingPairs.length,
-        whites: acc.total
-    };
+    const zipped = secret.map((item, index) => [item, guess[index]]);
+    const matchingPairs = zipped.filter(([a, b]) => a === b);
+    const blacks = matchingPairs.length;
+    const count = (xs, p) => xs.filter(x => x === p).length;
+    const add = (a, b) => a + b;
+    const sum = PEGS
+        .map(p => Math.min(count(secret, p), count(guess, p)))
+        .reduce(add);
+    const whites = sum - blacks;
+    return { blacks, whites };
 };
 
-export const initialAutoSolveSet = () => {
-    const pegs = [
-        Peg.RED,
-        Peg.GREEN,
-        Peg.BLUE,
-        Peg.YELLOW,
-        Peg.BLACK,
-        Peg.WHITE
-    ];
-    const set = [];
-    for (const a of pegs)
-    for (const b of pegs)
-    for (const c of pegs)
-    for (const d of pegs)
-        set.push([a, b, c, d]);
-    return set;
-};
+export const initialAutoSolveSet = () =>
+    Array.from(function* () {
+        for (const a of PEGS)
+        for (const b of PEGS)
+        for (const c of PEGS)
+        for (const d of PEGS)
+        yield [a, b, c, d];
+    }());
 
 const INITIAL_GUESS = [Peg.RED, Peg.RED, Peg.GREEN, Peg.GREEN];
 
-// https://en.wikipedia.org/wiki/Mastermind_(board_game)#Five-guess_algorithm
-// https://math.stackexchange.com/questions/1192961/knuths-mastermind-algorithm
 export const generateGuess = (s, used, code, feedback) =>
     used.length
         ? mainAlgorithm(s, used, code, feedback)
