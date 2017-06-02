@@ -44,9 +44,11 @@ export const guess = () =>
 export const autoGuess = () =>
     (dispatch, getState) => {
         const state = getState();
-        const feedbackPegs = state.activeGuessIndex >= 1 ? state.guesses[state.activeGuessIndex - 1].feedbackPegs : null;
-        const autoSolveLastFeedback = feedbackPegs ? feedbackPegsToFeedback(feedbackPegs) : null;
-        const generatedGuess = generateGuess(state.autoSolveSet, autoSolveLastFeedback);
+        const lastGuess = state.activeGuessIndex >= 1 ? state.guesses[state.activeGuessIndex - 1] : null;
+        const code = lastGuess ? lastGuess.code : null;
+        const feedbackPegs = lastGuess ? lastGuess.feedbackPegs : null;
+        const feedback = feedbackPegs ? feedbackPegsToFeedback(feedbackPegs) : null;
+        const generatedGuess = generateGuess(state.autoSolveSet, code, feedback);
         dispatch(setGeneratedGuess(generatedGuess));
         dispatch(guess());
     };

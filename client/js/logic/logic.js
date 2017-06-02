@@ -44,19 +44,25 @@ const INITIAL_GUESS = [Peg.RED, Peg.RED, Peg.GREEN, Peg.GREEN];
 
 // https://en.wikipedia.org/wiki/Mastermind_(board_game)#Five-guess_algorithm
 // https://math.stackexchange.com/questions/1192961/knuths-mastermind-algorithm
-export const generateGuess = (autoSolveSet, autoSolveLastFeedback) => {
-    const guess = autoSolveLastFeedback
-        ? mainAlgorithm(autoSolveSet, autoSolveLastFeedback)
-        : INITIAL_GUESS;
+export const generateGuess = (autoSolveSet, code, feedback) => {
+    const [guess, newAutoSolveSet] = code && feedback
+        ? mainAlgorithm(autoSolveSet, code, feedback)
+        : [INITIAL_GUESS, autoSolveSet];
     return {
         guess,
-        autoSolveSet: autoSolveSet.filter(notSameGuessAs(guess))
+        autoSolveSet: newAutoSolveSet.filter(notSameGuessAs(guess))
     };
 };
 
-const mainAlgorithm = (autoSolveSet, autoSolveLastFeedback) => {
-    // TODO: implement the real algorithm.
-    return autoSolveLastFeedback.blacks > 0 ? autoSolveSet[0] : autoSolveSet[1];
+const mainAlgorithm = (autoSolveSet, code, feedback) => {
+    const newAutoSolveSet = autoSolveSet.filter(hasSameFeedbackAs(code, feedback));
+    newAutoSolveSet.forEach(s => console.log(`s: ${s.map(p => p.valueOf().toString()).join(', ')}`));
+    return [newAutoSolveSet[0], newAutoSolveSet];
+};
+
+const hasSameFeedbackAs = (code, feedback) => s => {
+    const feedback2 = evaluateGuess(s, code);
+    return feedback.blacks === feedback2.blacks && feedback.whites === feedback2.whites;
 };
 
 const notSameGuessAs = g1 => g2 => g1.some((p, i) => p !== g2[i]);

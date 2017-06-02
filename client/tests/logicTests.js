@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { evaluateGuess } from '../js/logic';
+import { evaluateGuess, initialAutoSolveSet, generateGuess } from '../js/logic';
 import { Peg } from '../js/constants';
 
 const R = Peg.RED;
@@ -11,45 +11,57 @@ const WH = Peg.WHITE;
 
 describe('logic', () => {
 
-    it('no overlap at all', () => {
+    it('evaluateGuess with no overlap at all', () => {
         const actual = evaluateGuess([R, G, B, Y], [BL, BL, WH, WH]);
         expect(actual.blacks).to.equal(0);
         expect(actual.whites).to.equal(0);
     });
 
-    it('exact match', () => {
+    it('evaluateGuess with exact match', () => {
         const actual = evaluateGuess([R, G, B, Y], [R, G, B, Y]);
         expect(actual.blacks).to.equal(4);
         expect(actual.whites).to.equal(0);
     });
 
-    it('all correct colours but all wrong positions', () => {
+    it('evaluateGuess with all correct colours but all wrong positions', () => {
         const actual = evaluateGuess([R, G, B, Y], [Y, B, G, R]);
         expect(actual.blacks).to.equal(0);
         expect(actual.whites).to.equal(4);
     });
 
-    it('tricky 1', () => {
+    it('evaluateGuess with specific scenario 1', () => {
         const actual = evaluateGuess([G, G, B, B], [B, B, G, G]);
         expect(actual.blacks).to.equal(0);
         expect(actual.whites).to.equal(4);
     });
 
-    it('tricky 2', () => {
+    it('evaluateGuess with specific scenario 2', () => {
         const actual = evaluateGuess([G, G, B, B], [B, B, G, Y]);
         expect(actual.blacks).to.equal(0);
         expect(actual.whites).to.equal(3);
     });
 
-    it('tricky 3', () => {
+    it('evaluateGuess with specific scenario 3', () => {
         const actual = evaluateGuess([G, G, B, Y], [B, B, G, G]);
         expect(actual.blacks).to.equal(0);
         expect(actual.whites).to.equal(3);
     });
 
-    it('bug - should be 1 black and 2 white but was getting 3 white', () => {
+    it('evaluateGuess with specific scenario 4', () => {
         const actual = evaluateGuess([B, Y, WH, WH], [B, WH, Y, Y]);
         expect(actual.blacks).to.equal(1);
         expect(actual.whites).to.equal(2);
+    });
+
+    it('initialAutoSolveSet', () => {
+        const actual = initialAutoSolveSet();
+        expect(actual).to.have.length.of(1296);
+    });
+
+    it('generateGuess with no previous guess', () => {
+        const autoSolveSet = initialAutoSolveSet();
+        const actual = generateGuess(autoSolveSet, null, null);
+        expect(actual.guess).to.deep.equal([R, R, G, G]);
+        expect(actual.autoSolveSet).to.have.length.of(1295);
     });
 });
