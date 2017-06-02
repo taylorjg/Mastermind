@@ -41,7 +41,7 @@ class App extends Component {
                                 active={index === props.activeGuessIndex}
                                 guess={guess}
                                 onSetPeg={props.onSetPeg}
-                                onGuess={props.onGuess}
+                                onGuess={props.autoSolveMode ? props.onAutoGuess : props.onGuess}
                             >
                             </GuessRow>;
                         })
@@ -55,6 +55,7 @@ class App extends Component {
 App.propTypes = {
     version: PropTypes.string.isRequired,
     gameState: PropTypes.symbol.isRequired,
+    autoSolveMode: PropTypes.bool.isRequired,
     secret: PropTypes.arrayOf(PropTypes.symbol).isRequired,
     guesses: PropTypes.arrayOf(PropTypes.shape({
         code: PropTypes.arrayOf(PropTypes.symbol).isRequired,
@@ -63,7 +64,8 @@ App.propTypes = {
     activeGuessIndex: PropTypes.number.isRequired,
     onStart: PropTypes.func.isRequired,
     onSetPeg: PropTypes.func.isRequired,
-    onGuess: PropTypes.func.isRequired
+    onGuess: PropTypes.func.isRequired,
+    onAutoGuess: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => state;
@@ -71,7 +73,7 @@ const mapStateToProps = state => state;
 const mapDispatchToProps = dispatch => ({
     onStart: () => dispatch(actions.start()),
     onSetPeg: (index, peg) => dispatch(actions.setPeg(index, peg)),
-    onGuess: code => dispatch(actions.guess(code)),
+    onGuess: () => dispatch(actions.guess()),
     onAutoGuess: () => dispatch(actions.autoGuess())
 });
 

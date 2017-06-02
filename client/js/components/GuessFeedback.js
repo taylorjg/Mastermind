@@ -12,7 +12,7 @@ const GuessFeedback = ({
     const unselected = peg => peg === Peg.UNSELECTED;
     const conditionalAttributesSubmit = {};
     if (code.some(unselected)) {
-        conditionalAttributesSubmit.disabled = true;
+        // conditionalAttributesSubmit.disabled = true;
     }
     return (
         <div className="col-xs-1">
@@ -21,7 +21,7 @@ const GuessFeedback = ({
                     ? <button
                         className="btn btn-sm btn-info"
                         {...conditionalAttributesSubmit}
-                        onClick={() => onGuess(code)}
+                        onClick={onGuess}
                     >
                         <span className="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
                     </button>

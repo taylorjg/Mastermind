@@ -11,47 +11,49 @@ const randomSecret = () => {
     };
     const secret = [0, 1, 2, 3].map(chooseRandomPeg);
     return secret;
-}; 
+};
 
 export const start = () => ({
     type: AT.START,
     secret: randomSecret()
 });
 
-export const guess = guess =>
+export const setPeg = (index, peg) => ({
+    type: AT.SET_PEG,
+    index,
+    peg
+});
+
+export const guess = () =>
     (dispatch, getState) => {
         const state = getState();
-        commonGuessEvaluation(dispatch, state, guess);
+        const guess = state.guesses[state.activeGuessIndex].code;
+        const feedback = evaluateGuess(state.secret, guess);
+        const feedbackPegs = feedbackToFeedbackPegs(feedback);
+        if (feedback.blacks === 4) {
+            dispatch(correctGuess(feedbackPegs));
+        } else {
+            if (state.activeGuessIndex >= MAX_GUESSES - 1) {
+                dispatch(exceededGuesses(feedbackPegs));
+            } else {
+                dispatch(incorrectGuess(feedbackPegs));
+            }
+        }
     };
 
 export const autoGuess = () =>
     (dispatch, getState) => {
         const state = getState();
-        const { guess } = generateGuess(state.autoSolveSet);
-        commonGuessEvaluation(dispatch, state, guess);
+        const feedbackPegs = state.activeGuessIndex >= 1 ? state.guesses[state.activeGuessIndex - 1].feedbackPegs : null;
+        const autoSolveLastFeedback = feedbackPegs ? feedbackPegsToFeedback(feedbackPegs) : null;
+        const generatedGuess = generateGuess(state.autoSolveSet, autoSolveLastFeedback);
+        dispatch(setGeneratedGuess(generatedGuess));
+        dispatch(guess());
     };
 
-const commonGuessEvaluation = (dispatch, state, guess) => {
-    const feedback = evaluateGuess(state.secret, guess);
-    const feedbackPegs = [].concat(
-        Array(feedback.blacks).fill(FeedbackPeg.BLACK),
-        Array(feedback.whites).fill(FeedbackPeg.WHITE)
-    );
-    if (feedback.blacks === 4) {
-        dispatch(correctGuess(feedbackPegs));
-    } else {
-        if (state.activeGuessIndex >= MAX_GUESSES - 1) {
-            dispatch(exceededGuesses(feedbackPegs));
-        } else {
-            dispatch(incorrectGuess(feedbackPegs));
-        }
-    }
-};
-
-export const setPeg = (index, peg) => ({
-    type: AT.SET_PEG,
-    index,
-    peg
+export const setGeneratedGuess = generatedGuess => ({
+    type: AT.SET_GENERATED_GUESS,
+    generatedGuess
 });
 
 export const correctGuess = feedbackPegs => ({
@@ -67,4 +69,15 @@ export const incorrectGuess = feedbackPegs => ({
 export const exceededGuesses = feedbackPegs => ({
     type: AT.EXCEEDED_GUESSES,
     feedbackPegs
+});
+
+const feedbackToFeedbackPegs = feedback =>
+    [].concat(
+        Array(feedback.blacks).fill(FeedbackPeg.BLACK),
+        Array(feedback.whites).fill(FeedbackPeg.WHITE)
+    );
+
+const feedbackPegsToFeedback = feedbackPegs => ({
+    blacks: feedbackPegs.filter(fp => fp === FeedbackPeg.BLACK).length,
+    whites: feedbackPegs.filter(fp => fp === FeedbackPeg.WHITE).length
 });

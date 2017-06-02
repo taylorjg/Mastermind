@@ -45,6 +45,17 @@ export default (state = initialState, action) => {
                 ]
             };
 
+        case AT.SET_GENERATED_GUESS:
+            return {
+                ...state,
+                autoSolveSet: action.generatedGuess.autoSolveSet,
+                guesses: [
+                    ...state.guesses.slice(0, state.activeGuessIndex),
+                    state.guesses[state.activeGuessIndex].updateCode(action.generatedGuess.guess),
+                    ...state.guesses.slice(state.activeGuessIndex + 1)
+                ]
+            };
+
         case AT.CORRECT_GUESS:
             return {
                 ...state,
