@@ -11,25 +11,23 @@ const PEGS = [
 
 export const evaluateGuess = (secret, guess) => {
     const zipped = secret.map((item, index) => [item, guess[index]]);
-    const matchingPairs = zipped.filter(([a, b]) => a === b);
-    const blacks = matchingPairs.length;
+    const blacks = zipped.filter(([a, b]) => a === b).length;
     const count = (xs, p) => xs.filter(x => x === p).length;
     const add = (a, b) => a + b;
-    const sum = PEGS
-        .map(p => Math.min(count(secret, p), count(guess, p)))
-        .reduce(add);
+    const sum = PEGS.map(p => Math.min(count(secret, p), count(guess, p))).reduce(add);
     const whites = sum - blacks;
     return { blacks, whites };
 };
 
-export const initialAutoSolveSet = () =>
-    Array.from(function* () {
+const ALL_COMBINATIONS = Array.from(function* () {
         for (const a of PEGS)
         for (const b of PEGS)
         for (const c of PEGS)
         for (const d of PEGS)
         yield [a, b, c, d];
     }());
+
+export const initialAutoSolveSet = () => ALL_COMBINATIONS.slice();
 
 const INITIAL_GUESS = [Peg.RED, Peg.RED, Peg.GREEN, Peg.GREEN];
 
@@ -42,13 +40,33 @@ export const generateGuess = (s, used, code, feedback) =>
             autoSolveUsed: [INITIAL_GUESS]
         };
 
+// const ALL_FEEDBACKS =
+//     Array.from(function* () {
+//         for (const blacks of [0, 1, 2, 3, 4])
+//         for (const whites of [0, 1, 2, 3, 4])
+//         yield { blacks, whites };
+//     }())
+//     .filter(fb => fb.blacks + fb.whites <= 4)
+//     .filter(fb => !(fb.blacks === 3 && fb.whites === 1));
+
 const mainAlgorithm = (s, used, code, feedback) => {
-    const newAutoSolveSet = s.filter(hasSameFeedbackAs(code, feedback));
-    newAutoSolveSet.forEach(s => console.log(`s: ${s.map(p => p.valueOf().toString()).join(', ')}`));
-    const guess = newAutoSolveSet[0];
+    const s2 = s.filter(hasSameFeedbackAs(code, feedback));
+    
+    // TODO: temp logic (seems to work pretty well though!).
+    const guess = s2[0];
+
+    // if first:
+    // 		guess = 'AABB'
+    // 	elif len(secrets) == 1:
+    // 		guess = secrets.pop()
+    // 	else:
+    // 		guess = max(possible, key=lambda x: min(sum(1 for s in secrets if score(s, x) != res) for res in results))    
+
+    // const unused = initialAutoSolveSet().filter(x => used.includes(x));
+
     return {
         guess,
-        autoSolveSet: newAutoSolveSet,
+        autoSolveSet: s2,
         autoSolveUsed: used.concat([guess])
     };
 };
