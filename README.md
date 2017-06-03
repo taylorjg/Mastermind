@@ -6,8 +6,6 @@ Just trying to gain more experience with React/Redux. Simple implementation of t
 
 ## TODO
 
-* Readme: fill in description
-* Readme: add screenshots
 * Add a button to abandon an in-progress game
 * Add the option to auto-solve using Knuth's algorithm
     * Trigger it by adding something to the query string or via a UI checkbox ?
