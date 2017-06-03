@@ -49,19 +49,16 @@ describe('autosolve', () => {
 
         const loop = state => {
             const result = generateGuess(state.autoSolveSet, state.autoSolveUsed, state.lastGuess, state.lastGuessFeedback);
-            const guess = result.guess;
-            const feedback = evaluateGuess(secret, guess);
-            if (feedback.blacks === 4 && feedback.whites === 0) {
-                return state.numAttempts;
-            } else {
-                return loop({
+            const feedback = evaluateGuess(secret, result.guess);
+            return (feedback.blacks === 4 && feedback.whites === 0)
+                ? state.numAttempts
+                : loop({
                     autoSolveSet: result.autoSolveSet,
                     autoSolveUsed: result.autoSolveUsed,
-                    lastGuess: guess,
+                    lastGuess: result.guess,
                     lastGuessFeedback: feedback,
                     numAttempts: state.numAttempts + 1
                 });
-            }
         };
 
         const numAttempts = loop({
