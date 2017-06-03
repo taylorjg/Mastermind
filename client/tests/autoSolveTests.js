@@ -44,23 +44,34 @@ const stringToPeg = s => {
 describe('autosolve', () => {
 
     const propertyTest = (verdict, ss) => {
+
         const secret = stringsToPegs(ss);
-        let numAttempts = 0;
-        let s = initialAutoSolveSet();
-        let used = [];
-        let lastGuess = null;
-        let lastGuessFeedback = null;
-        for (;;) {
-            numAttempts++;
-            const result = generateGuess(s, used, lastGuess, lastGuessFeedback);
+
+        const loop = state => {
+            const result = generateGuess(state.autoSolveSet, state.autoSolveUsed, state.lastGuess, state.lastGuessFeedback);
             const guess = result.guess;
             const feedback = evaluateGuess(secret, guess);
-            if (feedback.blacks === 4 && feedback.whites === 0) break;
-            s = result.autoSolveSet;
-            used = result.autoSolveUsed;
-            lastGuess = guess;
-            lastGuessFeedback = feedback;
-        }
+            if (feedback.blacks === 4 && feedback.whites === 0) {
+                return state.numAttempts;
+            } else {
+                return loop({
+                    autoSolveSet: result.autoSolveSet,
+                    autoSolveUsed: result.autoSolveUsed,
+                    lastGuess: guess,
+                    lastGuessFeedback: feedback,
+                    numAttempts: state.numAttempts + 1
+                });
+            }
+        };
+
+        const numAttempts = loop({
+            autoSolveSet: initialAutoSolveSet(),
+            autoSolveUsed: [],
+            lastGuess: null,
+            lastGuessFeedback: null,
+            numAttempts: 1
+        });
+
         verdict(numAttempts <= 5);
     };
 
