@@ -1,6 +1,7 @@
 import { MAX_GUESSES, GameState, Peg } from '../constants';
 import * as AT from '../actions/actionTypes';
 import Guess from '../models/guess';
+import { initialAutoSolveSet } from '../logic';
 
 const EMPTY_CODE = Array(4).fill(Peg.UNSELECTED);
 const EMPTY_FEEDBACK_PEGS = [];
@@ -8,7 +9,12 @@ const EMPTY_GUESS = new Guess(EMPTY_CODE, EMPTY_FEEDBACK_PEGS);
 const EMPTY_GUESSES = Array(MAX_GUESSES).fill(EMPTY_GUESS);
 const NO_ACTIVE_GUESS = -1;
 
+const autoSolveMode = window.location.search.includes("autosolve");
+
 const initialState = {
+    autoSolveMode,
+    autoSolveSet: autoSolveMode ? initialAutoSolveSet() : [],
+    autoSolveUsed: [],
     gameState: GameState.INITIALISED,
     secret: EMPTY_CODE,
     guesses: EMPTY_GUESSES,
@@ -25,6 +31,8 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 gameState: GameState.IN_PROGRESS,
+                autoSolveSet: autoSolveMode ? initialAutoSolveSet() : [],
+                autoSolveUsed: [],
                 secret: action.secret,
                 guesses: EMPTY_GUESSES,
                 activeGuessIndex: 0
@@ -36,6 +44,18 @@ export default (state = initialState, action) => {
                 guesses: [
                     ...state.guesses.slice(0, state.activeGuessIndex),
                     state.guesses[state.activeGuessIndex].updateCodePeg(action.index, action.peg),
+                    ...state.guesses.slice(state.activeGuessIndex + 1)
+                ]
+            };
+
+        case AT.SET_GENERATED_GUESS:
+            return {
+                ...state,
+                autoSolveSet: action.generatedGuess.autoSolveSet,
+                autoSolveUsed: action.generatedGuess.autoSolveUsed,
+                guesses: [
+                    ...state.guesses.slice(0, state.activeGuessIndex),
+                    state.guesses[state.activeGuessIndex].updateCode(action.generatedGuess.guess),
                     ...state.guesses.slice(state.activeGuessIndex + 1)
                 ]
             };
