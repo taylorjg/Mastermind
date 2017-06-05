@@ -1,34 +1,8 @@
 import 'babel-polyfill';
 import JSC from 'jscheck';
+import JSC_it from './JSC_it';
 import { initialAutoSolveSet, generateGuess, evaluateGuess } from '../js/logic';
 import { Peg } from '../js/constants';
-
-const JSC_it = (name, predicate, signature, reps, timeoutSeconds) => {
-    it(name, done => {
-
-        let ok = true;
-
-        JSC.on_result(result => {
-            if (result.ok) {
-                done();
-            } else {
-                ok = false;
-                done(new Error('Property test failure'));
-            }
-        });
-
-        JSC.on_report(s => {
-            if (!ok) {
-                console.error(s);
-            }
-        });
-
-        JSC
-            .reps(reps)
-            .check(JSC.claim(name, predicate, signature));
-            
-    }).timeout(timeoutSeconds * 1000);
-};
 
 const stringsToPegs = strings => strings.map(stringToPeg);
 
@@ -80,5 +54,5 @@ describe('autosolve', () => {
         propertyTest,
         [JSC.array(4, JSC.one_of(['R', 'G', 'B', 'Y', 'BL', 'WH']))],
         10,
-        10 * 30);
+        30 * 1000);
 });

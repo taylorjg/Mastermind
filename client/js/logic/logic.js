@@ -10,10 +10,10 @@ const PEGS = [
 ];
 
 export const evaluateGuess = (secret, guess) => {
-    const blacks = secret.filter((peg, index) => peg === guess[index]).length;
     const count = (xs, p) => xs.filter(x => x === p).length;
     const add = (a, b) => a + b;
     const sum = PEGS.map(p => Math.min(count(secret, p), count(guess, p))).reduce(add);
+    const blacks = secret.filter((peg, index) => peg === guess[index]).length;
     const whites = sum - blacks;
     return { blacks, whites };
 };
@@ -40,95 +40,58 @@ export const initialAutoSolveSet = () => ALL_COMBINATIONS.slice();
 
 const INITIAL_GUESS = [Peg.RED, Peg.RED, Peg.GREEN, Peg.GREEN];
 
-export const generateGuess = (s, used, code, feedback) =>
-    used.length
-        ? mainAlgorithm(s, used, code, feedback)
+export const generateGuess = (set, usedCodes, lastGuess, lastGuessFeedback) =>
+    usedCodes.length
+        ? mainAlgorithm(set, usedCodes, lastGuess, lastGuessFeedback)
         : {
             guess: INITIAL_GUESS,
-            autoSolveSet: s,
+            autoSolveSet: set,
             autoSolveUsed: [INITIAL_GUESS]
         };
 
-const mainAlgorithm = (s, usedCodes, lastGuess, lastGuessFeedback) => {
+const mainAlgorithm = (set, usedCodes, lastGuess, lastGuessFeedback) => {
 
-    const s2 = s.filter(evaluatesToSameFeedback(lastGuess, lastGuessFeedback));
+    const filteredSet = set.filter(evaluatesToSameFeedback(lastGuess, lastGuessFeedback));
     const unusedCodes = initialAutoSolveSet().filter(guess => !usedCodes.find(sameGuessAs(guess)));
 
-    console.log(`s.length: ${s.length}; s2.length: ${s2.length}; usedCodes.length: ${usedCodes.length}; unusedCodes.length: ${unusedCodes.length}`);
-    dumpFeedback(lastGuessFeedback);
-
-    if (s2.length === 1) {
-        const guess = s2[0];
-        return {
-            guess,
-            autoSolveSet: s2,
-            autoSolveUsed: usedCodes.concat(guess)
-        };
-    }
-
-    let min = Number.MAX_VALUE;
     let guess = null;
 
-    unusedCodes.forEach(u => {
-        let max = 0;
-        ALL_OUTCOMES.forEach(outcome => {
-            let count = 0;
-            s2.forEach(g => {
-                const fb = evaluateGuess(g, u);
-                if (sameFeedback(outcome, fb)) {
-                    count++;
-                }
+    if (filteredSet.length === 1) {
+        guess = filteredSet[0];
+    }
+    else {
+        let min = Number.MAX_VALUE;
+        unusedCodes.forEach(u => {
+            let max = 0;
+            ALL_OUTCOMES.forEach(outcome => {
+                const count = countWithPredicate(filteredSet, evaluatesToSameFeedback(u, outcome));
+                if (count > max)
+                    max = count;
             });
-            if (count > max)
-                max = count;
+            if (max < min) {
+                min = max;
+                guess = u;
+            }
         });
-        if (max < min) {
-            min = max;
-            guess = u;
-        }
-    });
-
-    dumpCode('guess', guess);
+    }
 
     return {
         guess,
-        autoSolveSet: s2,
+        autoSolveSet: filteredSet,
         autoSolveUsed: usedCodes.concat([guess])
     };
 };
 
-const evaluatesToSameFeedback = (code, feedback) => s =>
-    sameFeedback(evaluateGuess(s, code), feedback);
+const countWithPredicate = (xs, p) =>
+    xs.reduce(
+        (acc, x) => acc + (p(x) ? 1 : 0),
+        0);
+
+const evaluatesToSameFeedback = (code1, feedback) => code2 =>
+    sameFeedback(evaluateGuess(code1, code2), feedback);
 
 const sameFeedback = (fb1, fb2) =>
     fb1.blacks === fb2.blacks &&
     fb1.whites === fb2.whites;
 
 const sameGuessAs = g1 => g2 => g1.every((p, i) => p === g2[i]);
-
-/* ---------------------------------------------------------------------- */
-
-const dumpCode = (label, code) => {
-    console.log(`${label}: ${pegsToString(code)}`);
-};
-
-const pegsToString = pegs => `[${pegs.map(pegToString).join(', ')}]`;
-
-const pegToString = peg => {
-    switch (peg) {
-        case Peg.RED: return 'R';
-        case Peg.GREEN: return 'G';
-        case Peg.BLUE: return 'B';
-        case Peg.YELLOW: return 'Y';
-        case Peg.BLACK: return 'BL';
-        case Peg.WHITE: return 'WH';
-        default: return '?';
-    }
-};
-
-const dumpFeedback = feedback => {
-    console.log(`feedback: ${blacksToString(feedback)}${whitesToString(feedback)}`);
-};
-
-const blacksToString = feedback => Array(feedback.blacks).fill('B').join('');
-const whitesToString = feedback => Array(feedback.whites).fill('W').join('');
