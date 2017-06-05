@@ -3,7 +3,7 @@ import JSC from 'jscheck';
 import { initialAutoSolveSet, generateGuess, evaluateGuess } from '../js/logic';
 import { Peg } from '../js/constants';
 
-const JSC_it = (name, predicate, signature) => {
+const JSC_it = (name, predicate, signature, reps, timeoutSeconds) => {
     it(name, done => {
 
         let ok = true;
@@ -23,29 +23,32 @@ const JSC_it = (name, predicate, signature) => {
             }
         });
 
-        JSC.check(JSC.claim(name, predicate, signature));
-    });
+        JSC
+            .reps(reps)
+            .check(JSC.claim(name, predicate, signature));
+            
+    }).timeout(timeoutSeconds * 1000);
 };
 
-const stringsToPegs = ss => ss.map(stringToPeg);
+const stringsToPegs = strings => strings.map(stringToPeg);
 
-const stringToPeg = s => {
-    switch (s) {
+const stringToPeg = string => {
+    switch (string) {
         case 'R': return Peg.RED;
         case 'G': return Peg.GREEN;
         case 'B': return Peg.BLUE;
         case 'Y': return Peg.YELLOW;
         case 'BL': return Peg.BLACK;
         case 'WH': return Peg.WHITE;
-        default: throw new Error(`Unknown peg, ${s}.`);
+        default: throw new Error(`Unknown peg colour, "${string}".`);
     }
 };
 
 describe('autosolve', () => {
 
-    const propertyTest = (verdict, ss) => {
+    const propertyTest = (verdict, strings) => {
 
-        const secret = stringsToPegs(ss);
+        const secret = stringsToPegs(strings);
 
         const loop = state => {
             const result = generateGuess(state.autoSolveSet, state.autoSolveUsed, state.lastGuess, state.lastGuessFeedback);
@@ -73,7 +76,9 @@ describe('autosolve', () => {
     };
 
     JSC_it(
-        'find the correct solution within 5 attempts',
+        'finds the correct solution within 5 attempts',
         propertyTest,
-        [JSC.array(4, JSC.one_of(['R', 'G', 'B', 'Y', 'BL', 'WH']))]);
+        [JSC.array(4, JSC.one_of(['R', 'G', 'B', 'Y', 'BL', 'WH']))],
+        10,
+        10 * 30);
 });
