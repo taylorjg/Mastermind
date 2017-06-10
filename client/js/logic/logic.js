@@ -60,19 +60,8 @@ const mainAlgorithm = (set, usedCodes, lastGuess, lastGuessFeedback) => {
         guess = filteredSet[0];
     }
     else {
-        let min = Number.MAX_VALUE;
-        unusedCodes.forEach(u => {
-            let max = 0;
-            ALL_OUTCOMES.forEach(outcome => {
-                const count = countWithPredicate(filteredSet, evaluatesToSameFeedback(u, outcome));
-                if (count > max)
-                    max = count;
-            });
-            if (max < min) {
-                min = max;
-                guess = u;
-            }
-        });
+        const f = filteredSet.length >= 256 ? parallel : serial;
+        guess = f(filteredSet, unusedCodes);
     }
 
     return {
@@ -80,6 +69,40 @@ const mainAlgorithm = (set, usedCodes, lastGuess, lastGuessFeedback) => {
         autoSolveSet: filteredSet,
         autoSolveUsed: usedCodes.concat([guess])
     };
+};
+
+const parallel = (filteredSet, unusedCodes) => {
+    console.log(`[parallel] filteredSet.length: ${filteredSet.length}`);
+    const midPoint = unusedCodes.length / 2;
+    const uc1 = unusedCodes.slice(0, midPoint);
+    const uc2 = unusedCodes.slice(midPoint);
+    const { guess: g1, min: m1 } = commonHelper(filteredSet, uc1);
+    const { guess: g2, min: m2 } = commonHelper(filteredSet, uc2);
+    return m1 < m2 ? g1 : g2;
+};
+
+const serial = (filteredSet, unusedCodes) => {
+    console.log(`[serial] filteredSet.length: ${filteredSet.length}`);
+    const { guess } = commonHelper(filteredSet, unusedCodes);
+    return guess;
+};
+
+const commonHelper = (filteredSet, unusedCodes) => {
+    let guess = null;
+    let min = Number.MAX_VALUE;
+    unusedCodes.forEach(u => {
+        let max = 0;
+        ALL_OUTCOMES.forEach(outcome => {
+            const count = countWithPredicate(filteredSet, evaluatesToSameFeedback(u, outcome));
+            if (count > max)
+                max = count;
+        });
+        if (max < min) {
+            min = max;
+            guess = u;
+        }
+    });
+    return { guess, min };
 };
 
 const countWithPredicate = (xs, p) =>

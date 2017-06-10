@@ -35,7 +35,7 @@ describe('autoSolve', () => {
     const MS_PER_TEST = 30 * 1000;
 
     const opts = {
-        tests: 10
+        tests: 1
     };
 
     it('finds the correct solution within 5 attempts', () => {
