@@ -1,5 +1,9 @@
 import { Peg } from '../constants';
-// import hamsters from 'hamsters.js';
+import hamsters from 'hamsters.js';
+
+hamsters.init({
+    maxThreads: 8
+});
 
 const PEGS = [
     Peg.RED,
@@ -42,61 +46,97 @@ export const initialAutoSolveSet = () => ALL_COMBINATIONS.slice();
 const INITIAL_GUESS = [Peg.RED, Peg.RED, Peg.GREEN, Peg.GREEN];
 
 export const generateGuessAsync = (set, usedCodes, lastGuess, lastGuessFeedback) =>
-    new Promise(resolve => {
-        const result = usedCodes.length
-            ? mainAlgorithm(set, usedCodes, lastGuess, lastGuessFeedback)
-            : {
-                guess: INITIAL_GUESS,
-                autoSolveSet: set,
-                autoSolveUsed: [INITIAL_GUESS]
-            };
-        resolve(result);
-    });
+    usedCodes.length
+        ? mainAlgorithmAsync(set, usedCodes, lastGuess, lastGuessFeedback)
+        : Promise.resolve({
+            guess: INITIAL_GUESS,
+            autoSolveSet: set,
+            autoSolveUsed: [INITIAL_GUESS]
+        });
 
-const mainAlgorithm = (set, usedCodes, lastGuess, lastGuessFeedback) => {
+const mainAlgorithmAsync = (set, usedCodes, lastGuess, lastGuessFeedback) => {
 
     const filteredSet = set.filter(evaluatesToSameFeedback(lastGuess, lastGuessFeedback));
 
-    let guess = null;
-
     if (filteredSet.length === 1) {
-        guess = filteredSet[0];
-    }
-    else {
-        const unusedCodes = initialAutoSolveSet().filter(guess => !usedCodes.find(sameGuessAs(guess)));
-        guess = parallelSubTasks(filteredSet, unusedCodes);
+        const guess = filteredSet[0];
+        return Promise.resolve({
+            guess,
+            autoSolveSet: filteredSet,
+            autoSolveUsed: usedCodes.concat([guess])
+        });
     }
 
-    return {
-        guess,
-        autoSolveSet: filteredSet,
-        autoSolveUsed: usedCodes.concat([guess])
-    };
+    const unusedCodes = initialAutoSolveSet().filter(guess => !usedCodes.find(sameGuessAs(guess)));
+
+    return parallelSubTasks(filteredSet, unusedCodes)
+        .then(guess => ({
+            guess,
+            autoSolveSet: filteredSet,
+            autoSolveUsed: usedCodes.concat([guess])
+        }));
 };
 
 const parallelSubTasks = (filteredSet, unusedCodes) => {
 
-    const midPoint = unusedCodes.length / 2;
-    const uc1 = unusedCodes.slice(0, midPoint);
-    const uc2 = unusedCodes.slice(midPoint);
+    const combineSubTaskResults = subTaskResults =>
+        minBy(subTaskResults, x => x.min).guess;
 
-    const combineSubTaskResults = subTaskResults => {
-        const seed = { min: Number.MAX_VALUE };
-        const bestSubTaskResult = subTaskResults.reduce(
-            (acc, subTaskResult) => subTaskResult.min < acc.min ? subTaskResult : acc,
-            seed);
-        return bestSubTaskResult.guess;
+    const params = {
+        ALL_OUTCOMES: ALL_OUTCOMES,
+        filteredSet: filteredSet.map(marshalPegs),
+        array: unusedCodes.map(marshalPegs)
     };
 
-    return combineSubTaskResults([
-        subTask(filteredSet, uc1),
-        subTask(filteredSet, uc2)
-    ]);
+    return new Promise(resolve => {
+        hamsters.run(
+            params,
+            subTask,
+            function (subTaskResults) {
+                const guessNumbers = combineSubTaskResults(subTaskResults);
+                const guessPegs = unmarshalPegs(guessNumbers);
+                resolve(guessPegs);
+            },
+            8
+        );
+    });
 };
 
-const subTask = (filteredSet, unusedCodes) => {
+const subTask = () => {
+
+    /* eslint-disable no-undef */
+    const myparams = params;
+    const myrtn = rtn;
+    /* eslint-enable no-undef */
+
+    const ALL_OUTCOMES = myparams.ALL_OUTCOMES;
+    const filteredSet = myparams.filteredSet;
+    const unusedCodes = myparams.array;
+
+    const evaluateGuess = (secret, guess) => {
+        const count = (xs, p) => xs.filter(x => x === p).length;
+        const add = (a, b) => a + b;
+        const sum = [0, 1, 2, 3, 4, 5].map(p => Math.min(count(secret, p), count(guess, p))).reduce(add);
+        const blacks = secret.filter((peg, index) => peg === guess[index]).length;
+        const whites = sum - blacks;
+        return { blacks, whites };
+    };
+
+    const countWithPredicate = (xs, p) =>
+        xs.reduce(
+            (acc, x) => acc + (p(x) ? 1 : 0),
+            0);
+
+    const evaluatesToSameFeedback = (code1, feedback) => code2 =>
+        sameFeedback(evaluateGuess(code1, code2), feedback);
+
+    const sameFeedback = (fb1, fb2) =>
+        fb1.blacks === fb2.blacks &&
+        fb1.whites === fb2.whites;
+
     let guess = null;
     let min = Number.MAX_VALUE;
+
     unusedCodes.forEach(u => {
         let max = 0;
         ALL_OUTCOMES.forEach(outcome => {
@@ -109,13 +149,35 @@ const subTask = (filteredSet, unusedCodes) => {
             guess = u;
         }
     });
-    return { guess, min };
+
+    myrtn.data = { guess, min };
 };
 
-const countWithPredicate = (xs, p) =>
-    xs.reduce(
-        (acc, x) => acc + (p(x) ? 1 : 0),
-        0);
+const marshalPegs = pegs => pegs.map(pegToNumber);
+const pegToNumber = peg => {
+    switch (peg) {
+        case Peg.RED: return 0;
+        case Peg.GREEN: return 1;
+        case Peg.BLUE: return 2;
+        case Peg.YELLOW: return 3;
+        case Peg.BLACK: return 4;
+        case Peg.WHITE: return 5;
+    }
+};
+
+const unmarshalPegs = numbers => numbers.map(numberToPeg);
+const numberToPeg = number => {
+    switch (number) {
+        case 0: return Peg.RED;
+        case 1: return Peg.GREEN;
+        case 2: return Peg.BLUE;
+        case 3: return Peg.YELLOW;
+        case 4: return Peg.BLACK;
+        case 5: return Peg.WHITE;
+    }
+};
+
+const minBy = (xs, f) => xs.reduce((acc, x) => f(x) < f(acc) ? x : acc);
 
 const evaluatesToSameFeedback = (code1, feedback) => code2 =>
     sameFeedback(evaluateGuess(code1, code2), feedback);
