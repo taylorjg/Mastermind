@@ -1,6 +1,6 @@
 import 'babel-polyfill';
 import { expect } from 'chai';
-import { evaluateGuess, initialAutoSolveSet, generateGuess } from '../js/logic';
+import { evaluateGuess, initialAutoSolveSet, generateGuessAsync } from '../js/logic';
 import { Peg } from '../js/constants';
 
 const R = Peg.RED;
@@ -56,14 +56,20 @@ describe('logic', () => {
 
     it('initialAutoSolveSet', () => {
         const actual = initialAutoSolveSet();
-        expect(actual).to.have.length.of(1296);
+        expect(actual).to.have.length.of(6 * 6 * 6 * 6);
     });
 
-    it('generateGuess with no previous guesses', () => {
+    it('generateGuessAsync with no previous guesses', done => {
         const autoSolveSet = initialAutoSolveSet();
-        const actual = generateGuess(autoSolveSet, [], null, null);
-        expect(actual.guess).to.deep.equal([R, R, G, G]);
-        expect(actual.autoSolveSet).to.deep.equal(autoSolveSet);
-        expect(actual.autoSolveUsed).to.deep.equal([[R, R, G, G]]);
+        const autoSolveUsed = [];
+        const lastGuess = null;
+        const lastGuessFeedback = null;
+        generateGuessAsync(autoSolveSet, autoSolveUsed, lastGuess, lastGuessFeedback)
+            .then(actual => {
+                expect(actual.guess).to.deep.equal([R, R, G, G]);
+                expect(actual.autoSolveSet).to.deep.equal(autoSolveSet);
+                expect(actual.autoSolveUsed).to.deep.equal([[R, R, G, G]]);
+                done();
+            });
     });
 });
