@@ -35,13 +35,14 @@ describe('autoSolve', () => {
     const MS_PER_TEST = 30 * 1000;
 
     const opts = {
-        tests: 1
+        tests: 100
     };
 
     it('finds the correct solution within 5 attempts', () => {
         const arbPeg = jsc.elements([P.RED, P.GREEN, P.BLUE, P.YELLOW, P.BLACK, P.WHITE]);
-        const arbSecret = jsc.tuple([arbPeg, arbPeg, arbPeg, arbPeg]);
+        const arbSecret = jsc.nonshrink(jsc.tuple([arbPeg, arbPeg, arbPeg, arbPeg]));
+        arbSecret.show = pegs => pegs.toString();
         const prop = jsc.forall(arbSecret, autoSolve);
-        jsc.check(prop, opts);
+        jsc.check(jsc.assert(prop), opts);
     }).timeout(MS_PER_TEST * opts.tests);
 });

@@ -1,4 +1,5 @@
 import { Peg } from '../constants';
+// import hamsters from 'hamsters.js';
 
 const PEGS = [
     Peg.RED,
@@ -21,38 +22,40 @@ export const evaluateGuess = (secret, guess) => {
 const ALL_COMBINATIONS =
     Array.from(function* () {
         for (const a of PEGS)
-        for (const b of PEGS)
-        for (const c of PEGS)
-        for (const d of PEGS)
-        yield [a, b, c, d];
+            for (const b of PEGS)
+                for (const c of PEGS)
+                    for (const d of PEGS)
+                        yield [a, b, c, d];
     }());
 
 const ALL_OUTCOMES =
     Array.from(function* () {
         for (const blacks of [0, 1, 2, 3, 4])
-        for (const whites of [0, 1, 2, 3, 4])
-        yield { blacks, whites };
+            for (const whites of [0, 1, 2, 3, 4])
+                yield { blacks, whites };
     }())
-    .filter(fb => fb.blacks + fb.whites <= 4)
-    .filter(fb => !(fb.blacks === 3 && fb.whites === 1));
+        .filter(fb => fb.blacks + fb.whites <= 4)
+        .filter(fb => !(fb.blacks === 3 && fb.whites === 1));
 
 export const initialAutoSolveSet = () => ALL_COMBINATIONS.slice();
 
 const INITIAL_GUESS = [Peg.RED, Peg.RED, Peg.GREEN, Peg.GREEN];
 
-export const generateGuess = (set, usedCodes, lastGuess, lastGuessFeedback) =>
-    usedCodes.length
-        ? mainAlgorithm(set, usedCodes, lastGuess, lastGuessFeedback)
-        : {
-            guess: INITIAL_GUESS,
-            autoSolveSet: set,
-            autoSolveUsed: [INITIAL_GUESS]
-        };
+export const generateGuessAsync = (set, usedCodes, lastGuess, lastGuessFeedback) =>
+    new Promise(resolve => {
+        const result = usedCodes.length
+            ? mainAlgorithm(set, usedCodes, lastGuess, lastGuessFeedback)
+            : {
+                guess: INITIAL_GUESS,
+                autoSolveSet: set,
+                autoSolveUsed: [INITIAL_GUESS]
+            };
+        resolve(result);
+    });
 
 const mainAlgorithm = (set, usedCodes, lastGuess, lastGuessFeedback) => {
 
     const filteredSet = set.filter(evaluatesToSameFeedback(lastGuess, lastGuessFeedback));
-    const unusedCodes = initialAutoSolveSet().filter(guess => !usedCodes.find(sameGuessAs(guess)));
 
     let guess = null;
 
@@ -60,8 +63,8 @@ const mainAlgorithm = (set, usedCodes, lastGuess, lastGuessFeedback) => {
         guess = filteredSet[0];
     }
     else {
-        const f = filteredSet.length >= 256 ? parallel : serial;
-        guess = f(filteredSet, unusedCodes);
+        const unusedCodes = initialAutoSolveSet().filter(guess => !usedCodes.find(sameGuessAs(guess)));
+        guess = parallelSubTasks(filteredSet, unusedCodes);
     }
 
     return {
@@ -71,23 +74,27 @@ const mainAlgorithm = (set, usedCodes, lastGuess, lastGuessFeedback) => {
     };
 };
 
-const parallel = (filteredSet, unusedCodes) => {
-    console.log(`[parallel] filteredSet.length: ${filteredSet.length}`);
+const parallelSubTasks = (filteredSet, unusedCodes) => {
+
     const midPoint = unusedCodes.length / 2;
     const uc1 = unusedCodes.slice(0, midPoint);
     const uc2 = unusedCodes.slice(midPoint);
-    const { guess: g1, min: m1 } = commonHelper(filteredSet, uc1);
-    const { guess: g2, min: m2 } = commonHelper(filteredSet, uc2);
-    return m1 < m2 ? g1 : g2;
+
+    const combineSubTaskResults = subTaskResults => {
+        const seed = { min: Number.MAX_VALUE };
+        const bestSubTaskResult = subTaskResults.reduce(
+            (acc, subTaskResult) => subTaskResult.min < acc.min ? subTaskResult : acc,
+            seed);
+        return bestSubTaskResult.guess;
+    };
+
+    return combineSubTaskResults([
+        subTask(filteredSet, uc1),
+        subTask(filteredSet, uc2)
+    ]);
 };
 
-const serial = (filteredSet, unusedCodes) => {
-    console.log(`[serial] filteredSet.length: ${filteredSet.length}`);
-    const { guess } = commonHelper(filteredSet, unusedCodes);
-    return guess;
-};
-
-const commonHelper = (filteredSet, unusedCodes) => {
+const subTask = (filteredSet, unusedCodes) => {
     let guess = null;
     let min = Number.MAX_VALUE;
     unusedCodes.forEach(u => {

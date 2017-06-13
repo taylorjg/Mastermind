@@ -1,6 +1,6 @@
 import * as AT from './actionTypes';
 import { MAX_GUESSES, Peg, FeedbackPeg } from '../constants';
-import { evaluateGuess, generateGuess } from '../logic';
+import { evaluateGuess, generateGuessAsync } from '../logic';
 
 const randomSecret = () => {
     const keys = Object.keys(Peg);
@@ -41,16 +41,18 @@ export const guess = () =>
         }
     };
 
-export const autoGuess = () =>
+export const autoGuessAsync = () =>
     (dispatch, getState) => {
         const state = getState();
         const lastGuess = state.activeGuessIndex >= 1 ? state.guesses[state.activeGuessIndex - 1] : null;
         const code = lastGuess ? lastGuess.code : null;
         const feedbackPegs = lastGuess ? lastGuess.feedbackPegs : null;
         const feedback = feedbackPegs ? feedbackPegsToFeedback(feedbackPegs) : null;
-        const generatedGuess = generateGuess(state.autoSolveSet, state.autoSolveUsed, code, feedback);
-        dispatch(setGeneratedGuess(generatedGuess));
-        dispatch(guess());
+        generateGuessAsync(state.autoSolveSet, state.autoSolveUsed, code, feedback)
+            .then(generatedGuess => {
+                dispatch(setGeneratedGuess(generatedGuess));
+                dispatch(guess());
+            });
     };
 
 export const setGeneratedGuess = generatedGuess => ({

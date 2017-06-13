@@ -75,7 +75,7 @@ const mapDispatchToProps = dispatch => ({
     onStart: () => dispatch(actions.start()),
     onSetPeg: (index, peg) => dispatch(actions.setPeg(index, peg)),
     onGuess: () => dispatch(actions.guess()),
-    onAutoGuess: () => dispatch(actions.autoGuess())
+    onAutoGuess: () => dispatch(actions.autoGuessAsync())
 });
 
 export default connect(
