@@ -48,12 +48,17 @@ export const autoGuessAsync = () =>
         const code = lastGuess ? lastGuess.code : null;
         const feedbackPegs = lastGuess ? lastGuess.feedbackPegs : null;
         const feedback = feedbackPegs ? feedbackPegsToFeedback(feedbackPegs) : null;
+        dispatch(generatingGuess());
         generateGuessAsync(state.autoSolveSet, state.autoSolveUsed, code, feedback)
             .then(generatedGuess => {
                 dispatch(setGeneratedGuess(generatedGuess));
                 dispatch(guess());
             });
     };
+
+export const generatingGuess = () => ({
+    type: AT.GENERATING_GUESS
+});
 
 export const setGeneratedGuess = generatedGuess => ({
     type: AT.SET_GENERATED_GUESS,

@@ -23,8 +23,7 @@ const GuessRow = ({
             <GuessFeedback
                 active={active}
                 autoSolveMode={autoSolveMode}
-                feedbackPegs={guess.feedbackPegs}
-                code={guess.code}
+                guess={guess}
                 onGuess={onGuess}
             >
             </GuessFeedback>
@@ -45,7 +44,8 @@ GuessRow.propTypes = {
     autoSolveMode: PropTypes.bool.isRequired,
     guess: PropTypes.shape({
         code: PropTypes.arrayOf(PropTypes.symbol).isRequired,
-        feedbackPegs: PropTypes.arrayOf(PropTypes.symbol).isRequired
+        feedbackPegs: PropTypes.arrayOf(PropTypes.symbol).isRequired,
+        generatingGuess: PropTypes.bool.isRequired
     }).isRequired,
     onSetPeg: PropTypes.func.isRequired,
     onGuess: PropTypes.func.isRequired

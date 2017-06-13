@@ -33,3 +33,11 @@ body {
 .peg.active {
     cursor: pointer;
 }
+
+.spinner {
+    margin-left: 5px;
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    background-image: url('assets/spinner.png');
+}

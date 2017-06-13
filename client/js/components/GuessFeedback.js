@@ -6,34 +6,47 @@ import { Peg } from '../constants';
 const GuessFeedback = ({
     active,
     autoSolveMode,
-    feedbackPegs,
-    code,
+    guess,
     onGuess
 }) => {
     const unselected = peg => peg === Peg.UNSELECTED;
     const conditionalAttributesSubmit = {};
-    if (code.some(unselected) && !autoSolveMode) {
+    if ((guess.code.some(unselected) && !autoSolveMode) || guess.generatingGuess)  {
         conditionalAttributesSubmit.disabled = true;
     }
+    const conditionalAttributesSpinner = {};
+    if (!guess.generatingGuess) {
+        conditionalAttributesSpinner.style = { visibility: 'hidden' };
+    }
+    const activeContent = () => {
+        return (
+            <div>
+                <button
+                    className="btn btn-sm btn-info"
+                    {...conditionalAttributesSubmit}
+                    onClick={onGuess}
+                >
+                    <span className="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+                </button>
+                <div
+                    className="spinner"
+                    {...conditionalAttributesSpinner}
+                >
+                </div>
+            </div>);
+    };
+    const inactiveContent = () => {
+        return guess.feedbackPegs.map((_, index) =>
+            <FeedbackPeg
+                key={index}
+                index={index}
+                feedbackPegs={guess.feedbackPegs}
+            >
+            </FeedbackPeg>);
+    };
     return (
         <div className="col-xs-1">
-            {
-                active
-                    ? <button
-                        className="btn btn-sm btn-info"
-                        {...conditionalAttributesSubmit}
-                        onClick={onGuess}
-                    >
-                        <span className="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
-                    </button>
-                    : feedbackPegs.map((_, index) =>
-                        <FeedbackPeg
-                            key={index}
-                            index={index}
-                            feedbackPegs={feedbackPegs}
-                        >
-                        </FeedbackPeg>)
-            }
+            {active ? activeContent() : inactiveContent()}
         </div>
     );
 };
@@ -41,8 +54,11 @@ const GuessFeedback = ({
 GuessFeedback.propTypes = {
     active: PropTypes.bool.isRequired,
     autoSolveMode: PropTypes.bool.isRequired,
-    feedbackPegs: PropTypes.arrayOf(PropTypes.symbol).isRequired,
-    code: PropTypes.arrayOf(PropTypes.symbol).isRequired,
+    guess: PropTypes.shape({
+        code: PropTypes.arrayOf(PropTypes.symbol).isRequired,
+        feedbackPegs: PropTypes.arrayOf(PropTypes.symbol).isRequired,
+        generatingGuess: PropTypes.bool.isRequired
+    }).isRequired,
     onGuess: PropTypes.func.isRequired
 };
 
