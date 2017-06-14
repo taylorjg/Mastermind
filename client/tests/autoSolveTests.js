@@ -47,7 +47,7 @@ const autoSolveAsync = strings => {
 
 describe('autoSolve', () => {
 
-    const MS_PER_TEST = 6 * 1000;
+    const MS_PER_TEST = 40 * 1000;
 
     const opts = {
         tests: 100
