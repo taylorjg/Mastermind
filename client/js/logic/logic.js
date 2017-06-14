@@ -1,8 +1,10 @@
 import { Peg } from '../constants';
 import hamsters from 'hamsters.js';
 
+const MAX_THREADS = 8;
+
 hamsters.init({
-    maxThreads: 8
+    maxThreads: MAX_THREADS
 });
 
 const PEGS = [
@@ -97,7 +99,7 @@ const parallelSubTasks = (filteredSet, unusedCodes) => {
                 const guessPegs = unmarshalPegs(guessNumbers);
                 resolve(guessPegs);
             },
-            8
+            MAX_THREADS
         );
     });
 };
@@ -112,6 +114,8 @@ const subTask = () => {
     const ALL_OUTCOMES = myparams.ALL_OUTCOMES;
     const filteredSet = myparams.filteredSet;
     const unusedCodes = myparams.array;
+
+    // console.log(`filteredSet.length: ${filteredSet.length}; unusedCodes.length: ${unusedCodes.length}`);
 
     const evaluateGuess = (secret, guess) => {
         const count = (xs, p) => xs.filter(x => x === p).length;
