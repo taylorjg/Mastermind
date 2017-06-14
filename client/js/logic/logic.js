@@ -71,7 +71,7 @@ const mainAlgorithmAsync = (set, usedCodes, lastGuess, lastGuessFeedback) => {
 
     const unusedCodes = initialAutoSolveSet().filter(guess => !usedCodes.find(sameGuessAs(guess)));
 
-    return parallelSubTasks(filteredSet, unusedCodes)
+    return runParallelSubTasks(filteredSet, unusedCodes)
         .then(guess => ({
             guess,
             autoSolveSet: filteredSet,
@@ -79,11 +79,12 @@ const mainAlgorithmAsync = (set, usedCodes, lastGuess, lastGuessFeedback) => {
         }));
 };
 
-const parallelSubTasks = (filteredSet, unusedCodes) => {
+const runParallelSubTasks = (filteredSet, unusedCodes) => {
 
     const combineSubTaskResults = subTaskResults =>
         minBy(subTaskResults, x => x.min).guess;
 
+    // Marshal symbols to numbers.
     const params = {
         ALL_OUTCOMES: ALL_OUTCOMES,
         filteredSet: filteredSet.map(marshalPegs),
@@ -96,6 +97,7 @@ const parallelSubTasks = (filteredSet, unusedCodes) => {
             subTask,
             function (subTaskResults) {
                 const guessNumbers = combineSubTaskResults(subTaskResults);
+                // Unmarshal numbers back to symbols.
                 const guessPegs = unmarshalPegs(guessNumbers);
                 resolve(guessPegs);
             },
@@ -107,54 +109,46 @@ const parallelSubTasks = (filteredSet, unusedCodes) => {
 const subTask = () => {
 
     /* eslint-disable no-undef */
-    const myparams = params;
-    const myrtn = rtn;
+    const hamstersParams = params;
+    const hamstersRtn = rtn;
     /* eslint-enable no-undef */
 
-    const ALL_OUTCOMES = myparams.ALL_OUTCOMES;
-    const filteredSet = myparams.filteredSet;
-    const unusedCodes = myparams.array;
+    const ALL_OUTCOMES = hamstersParams.ALL_OUTCOMES;
+    const filteredSet = hamstersParams.filteredSet;
+    const unusedCodes = hamstersParams.array;
 
     const evaluateGuess = (secret, guess) => {
         const count = (xs, p) => xs.filter(x => x === p).length;
         const add = (a, b) => a + b;
+        // In the context of the hamsters, we are using numbers rather than peg symbols.
         const sum = [0, 1, 2, 3, 4, 5].map(p => Math.min(count(secret, p), count(guess, p))).reduce(add);
         const blacks = secret.filter((peg, index) => peg === guess[index]).length;
         const whites = sum - blacks;
         return { blacks, whites };
     };
 
-    const countWithPredicate = (xs, p) =>
-        xs.reduce(
-            (acc, x) => acc + (p(x) ? 1 : 0),
-            0);
-
-    const evaluatesToSameFeedback = (code1, feedback) => code2 =>
-        sameFeedback(evaluateGuess(code1, code2), feedback);
-
     const sameFeedback = (fb1, fb2) =>
         fb1.blacks === fb2.blacks &&
         fb1.whites === fb2.whites;
 
-    let guess = null;
-    let min = Number.MAX_VALUE;
+    const evaluatesToSameFeedback = (code1, feedback) => code2 =>
+        sameFeedback(evaluateGuess(code1, code2), feedback);
 
-    unusedCodes.forEach(u => {
-        let max = 0;
-        ALL_OUTCOMES.forEach(outcome => {
-            const count = countWithPredicate(filteredSet, evaluatesToSameFeedback(u, outcome));
-            if (count > max)
-                max = count;
-        });
-        if (max < min) {
-            min = max;
-            guess = u;
-        }
-    });
+    const countWithPredicate = (xs, p) =>
+        xs.reduce((acc, x) => acc + (p(x) ? 1 : 0), 0);
 
-    myrtn.data = { guess, min };
+    const seed = { min: Number.MAX_VALUE };
+    hamstersRtn.data = unusedCodes.reduce((best, unusedCode) => {
+        const thisMax = ALL_OUTCOMES.reduce((maxCount, outcome) => {
+            const thisCount = countWithPredicate(filteredSet, evaluatesToSameFeedback(unusedCode, outcome));
+            return Math.max(maxCount, thisCount);
+        }, 0);
+        return thisMax < best.min ? { min: thisMax, guess: unusedCode } : best;
+    }, seed);
 };
 
+// When passing data from the 'main' thread to the hamsters, we can't
+// send peg symbols so we have to marshal them into numbers.
 const marshalPegs = pegs => pegs.map(pegToNumber);
 const pegToNumber = peg => {
     switch (peg) {
@@ -167,6 +161,7 @@ const pegToNumber = peg => {
     }
 };
 
+// Going the other way, we unmarshal numbers from the hamsters back into peg symbols.
 const unmarshalPegs = numbers => numbers.map(numberToPeg);
 const numberToPeg = number => {
     switch (number) {
