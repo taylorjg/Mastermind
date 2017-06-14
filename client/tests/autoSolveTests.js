@@ -1,11 +1,23 @@
-import 'babel-polyfill';
 import jsc from 'jsverify';
 import { initialAutoSolveSet, generateGuessAsync, evaluateGuess } from '../js/logic';
-import { Peg as P } from '../js/constants';
+import { Peg } from '../js/constants';
 
-const autoSolveAsync = secret => {
+const stringsToSecret = strings => strings.map(stringToPeg);
+const stringToPeg = string => {
+    switch (string) {
+        case "R": return Peg.RED;
+        case "G": return Peg.GREEN;
+        case "B": return Peg.BLUE;
+        case "Y": return Peg.YELLOW;
+        case "BL": return Peg.BLACK;
+        case "WH": return Peg.WHITE;
+    }
+};
 
-    console.log(`secret: ${secret}`);
+const autoSolveAsync = strings => {
+
+    const secret = stringsToSecret(strings);
+    console.log(`secret: ${strings}`);
 
     const loopAsync = state =>
         generateGuessAsync(state.autoSolveSet, state.autoSolveUsed, state.lastGuess, state.lastGuessFeedback)
@@ -35,15 +47,14 @@ const autoSolveAsync = secret => {
 
 describe('autoSolve', () => {
 
-    const MS_PER_TEST = 60 * 1000;
+    const MS_PER_TEST = 6 * 1000;
 
     const opts = {
-        tests: 10
+        tests: 100
     };
 
-    const arbPeg = jsc.elements([P.RED, P.GREEN, P.BLUE, P.YELLOW, P.BLACK, P.WHITE]);
+    const arbPeg = jsc.elements(["R", "G", "B", "Y", "BL", "WH"]);
     const arbSecret = jsc.nonshrink(jsc.tuple([arbPeg, arbPeg, arbPeg, arbPeg]));
-    arbSecret.show = pegs => pegs.toString();
 
     it('finds the correct solution within 5 attempts', () => {
         const prop = jsc.forall(arbSecret, autoSolveAsync);

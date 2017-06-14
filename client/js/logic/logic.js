@@ -115,8 +115,6 @@ const subTask = () => {
     const filteredSet = myparams.filteredSet;
     const unusedCodes = myparams.array;
 
-    // console.log(`filteredSet.length: ${filteredSet.length}; unusedCodes.length: ${unusedCodes.length}`);
-
     const evaluateGuess = (secret, guess) => {
         const count = (xs, p) => xs.filter(x => x === p).length;
         const add = (a, b) => a + b;
