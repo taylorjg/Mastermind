@@ -17,6 +17,7 @@ module.exports = config => {
     autoWatch: false,
     browsers: ['Chrome'],
     singleRun: true,
-    concurrency: Infinity
+    concurrency: Infinity,
+    browserNoActivityTimeout: 600000
   });
 };
