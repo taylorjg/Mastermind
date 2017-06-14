@@ -15,6 +15,7 @@ const initialState = {
     autoSolveMode,
     autoSolveSet: autoSolveMode ? initialAutoSolveSet() : [],
     autoSolveUsed: [],
+    generatingGuess: false,
     gameState: GameState.INITIALISED,
     secret: EMPTY_CODE,
     guesses: EMPTY_GUESSES,
@@ -48,6 +49,16 @@ export default (state = initialState, action) => {
                 ]
             };
 
+        case AT.GENERATING_GUESS:
+            return {
+                ...state,
+                guesses: [
+                    ...state.guesses.slice(0, state.activeGuessIndex),
+                    state.guesses[state.activeGuessIndex].setGeneratingGuess(),
+                    ...state.guesses.slice(state.activeGuessIndex + 1)
+                ]
+            };
+
         case AT.SET_GENERATED_GUESS:
             return {
                 ...state,
@@ -55,7 +66,7 @@ export default (state = initialState, action) => {
                 autoSolveUsed: action.generatedGuess.autoSolveUsed,
                 guesses: [
                     ...state.guesses.slice(0, state.activeGuessIndex),
-                    state.guesses[state.activeGuessIndex].updateCode(action.generatedGuess.guess),
+                    state.guesses[state.activeGuessIndex].setGeneratedGuess(action.generatedGuess.guess),
                     ...state.guesses.slice(state.activeGuessIndex + 1)
                 ]
             };
