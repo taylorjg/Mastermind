@@ -138,12 +138,12 @@ const subTask = () => {
         xs.reduce((acc, x) => acc + (p(x) ? 1 : 0), 0);
 
     const seed = { min: Number.MAX_VALUE };
-    hamstersRtn.data = unusedCodes.reduce((best, unusedCode) => {
-        const thisMax = ALL_OUTCOMES.reduce((maxCount, outcome) => {
-            const thisCount = countWithPredicate(filteredSet, evaluatesToSameFeedback(unusedCode, outcome));
-            return Math.max(maxCount, thisCount);
+    hamstersRtn.data = unusedCodes.reduce((currentBest, unusedCode) => {
+        const max = ALL_OUTCOMES.reduce((currentMax, outcome) => {
+            const count = countWithPredicate(filteredSet, evaluatesToSameFeedback(unusedCode, outcome));
+            return Math.max(currentMax, count);
         }, 0);
-        return thisMax < best.min ? { min: thisMax, guess: unusedCode } : best;
+        return max < currentBest.min ? { min: max, guess: unusedCode } : currentBest;
     }, seed);
 };
 
