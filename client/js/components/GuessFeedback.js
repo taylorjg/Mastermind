@@ -20,7 +20,7 @@ const GuessFeedback = ({
     }
     const activeContent = () => {
         return (
-            <div>
+            <div className="feedbackColumn">
                 <button
                     className="btn btn-sm btn-info"
                     {...conditionalAttributesSubmit}
