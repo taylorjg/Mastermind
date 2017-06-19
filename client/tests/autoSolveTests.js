@@ -58,6 +58,6 @@ describe('autoSolve', () => {
 
     it('finds the correct solution within 5 attempts', () => {
         const prop = jsc.forall(arbSecret, autoSolveAsync);
-        return jsc.check(prop, opts);
+        return jsc.assert(prop, opts);
     }).timeout(MS_PER_TEST * opts.tests);
 });
