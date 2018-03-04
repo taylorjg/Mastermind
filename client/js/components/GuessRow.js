@@ -1,11 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import GuessNumber from './GuessNumber';
 import GuessFeedback from './GuessFeedback';
 import GuessCode from './GuessCode';
 
 const GuessRow = ({
-    index,
     active,
     autoSolveMode,
     guess,
@@ -14,11 +12,6 @@ const GuessRow = ({
  }) => {
     return (
         <div className="row boardRow">
-
-            <GuessNumber
-                index={index}
-            >
-            </GuessNumber>
 
             <GuessFeedback
                 active={active}

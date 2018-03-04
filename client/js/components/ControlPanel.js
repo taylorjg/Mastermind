@@ -13,7 +13,7 @@ const ControlPanel = ({ gameState, onStart }) => {
             onClick={onStart}
             {...conditionalAttributes}
         >
-            Start
+            New Game
         </button>
     );
 };

@@ -14,47 +14,37 @@ class App extends Component {
         const reveal = props.gameState !== GameState.IN_PROGRESS;
         return (
             <div className="container-fluid">
-                <div>
-                    <div className="row boardRow">
-                        <div className="col-xs-1">
-                            <ControlPanel gameState={props.gameState} onStart={props.onStart}></ControlPanel>
-                        </div>
-                        <div className="col-xs-11">
-                            <span className="pull-right">version: <i>{props.version}</i></span>
-                        </div>
+                <div className="row">
+                    <div className="col-xs-12 col-md-offset-4 col-md-1">
+                        <ControlPanel gameState={props.gameState} onStart={props.onStart}></ControlPanel>
                     </div>
-                    <div className="row boardRow">
-                        <div className="col-xs-2"></div>
+                </div>
+                <div className="row">
+                    <div className="col-xs-offset-4 col-xs-8 col-md-offset-6 col-md-3">
                         <SecretCode code={props.secret} reveal={reveal}></SecretCode>
                     </div>
-                    <div className="row boardRow">
-                        <div className="col-xs-2"></div>
-                        <div className="col-xs-4 col-md-3 divider">
-                        </div>
-                    </div>
-                    {
-                        props.guesses.slice().reverse().map((guess, reverseIndex) => {
-                            const index = MAX_GUESSES - 1 - reverseIndex;
-                            return <GuessRow
-                                key={index}
-                                index={index}
-                                active={index === props.activeGuessIndex}
-                                autoSolveMode={props.autoSolveMode}
-                                guess={guess}
-                                onSetPeg={props.onSetPeg}
-                                onGuess={props.autoSolveMode ? props.onAutoGuess : props.onGuess}
-                            >
-                            </GuessRow>;
-                        })
-                    }
                 </div>
+                {
+                    props.guesses.slice().reverse().map((guess, reverseIndex) => {
+                        const index = MAX_GUESSES - 1 - reverseIndex;
+                        return <GuessRow
+                            key={index}
+                            index={index}
+                            active={index === props.activeGuessIndex}
+                            autoSolveMode={props.autoSolveMode}
+                            guess={guess}
+                            onSetPeg={props.onSetPeg}
+                            onGuess={props.autoSolveMode ? props.onAutoGuess : props.onGuess}
+                        >
+                        </GuessRow>;
+                    })
+                }
             </div>
         );
     }
 }
 
 App.propTypes = {
-    version: PropTypes.string.isRequired,
     gameState: PropTypes.symbol.isRequired,
     autoSolveMode: PropTypes.bool.isRequired,
     secret: PropTypes.arrayOf(PropTypes.symbol).isRequired,

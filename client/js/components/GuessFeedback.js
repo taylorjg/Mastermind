@@ -26,7 +26,7 @@ const GuessFeedback = ({
                     {...conditionalAttributesSubmit}
                     onClick={onGuess}
                 >
-                    <span className="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+                    Submit
                 </button>
                 <div
                     className="spinner"
@@ -45,7 +45,7 @@ const GuessFeedback = ({
             </FeedbackPeg>);
     };
     return (
-        <div className="col-xs-1">
+        <div className="col-xs-4 col-md-offset-4 col-md-2 feedbackColumn">
             {active ? activeContent() : inactiveContent()}
         </div>
     );
