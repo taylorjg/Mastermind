@@ -11,7 +11,7 @@ const GuessFeedback = ({
 }) => {
     const unselected = peg => peg === Peg.UNSELECTED;
     const conditionalAttributesSubmit = {};
-    if ((guess.code.some(unselected) && !autoSolveMode) || guess.generatingGuess)  {
+    if ((guess.code.some(unselected) && !autoSolveMode) || guess.generatingGuess) {
         conditionalAttributesSubmit.disabled = true;
     }
     const conditionalAttributesSpinner = {};
@@ -20,7 +20,7 @@ const GuessFeedback = ({
     }
     const activeContent = () => {
         return (
-            <div className="feedbackColumn">
+            <div className="col-xs-4 col-md-offset-5 col-md-1 feedbackColumn">
                 <button
                     className="btn btn-sm btn-info"
                     {...conditionalAttributesSubmit}
@@ -36,19 +36,21 @@ const GuessFeedback = ({
             </div>);
     };
     const inactiveContent = () => {
-        return guess.feedbackPegs.map((_, index) =>
-            <FeedbackPeg
-                key={index}
-                index={index}
-                feedbackPegs={guess.feedbackPegs}
-            >
-            </FeedbackPeg>);
+        return (
+            <div className="col-xs-4 col-md-offset-5 col-md-1 feedbackColumn">
+                {
+                    guess.feedbackPegs.map((_, index) =>
+                        <FeedbackPeg
+                            key={index}
+                            index={index}
+                            feedbackPegs={guess.feedbackPegs}
+                        />
+                    )
+                }
+            </div>
+        );
     };
-    return (
-        <div className="col-xs-4 col-md-offset-4 col-md-2 feedbackColumn">
-            {active ? activeContent() : inactiveContent()}
-        </div>
-    );
+    return active ? activeContent() : inactiveContent();
 };
 
 GuessFeedback.propTypes = {
