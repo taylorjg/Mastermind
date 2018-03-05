@@ -6,7 +6,7 @@
   "main": "server/app.js",
   "scripts": {
     "start": "node server/app.js",
-    "test": "karma start",
+    "test": "mocha -r babel-register client/tests/logicTests.js",
     "heroku-postbuild": "npm install --dev && webpack"
   },
   "author": "Jonathan Taylor",

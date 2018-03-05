@@ -56,11 +56,8 @@ describe('autoSolve', () => {
     const arbPeg = jsc.elements(["R", "G", "B", "Y", "BL", "WH"]);
     const arbSecret = jsc.nonshrink(jsc.tuple([arbPeg, arbPeg, arbPeg, arbPeg]));
 
-    const skip = false;
-    if (skip) {
-        it('finds the correct solution within 5 attempts', () => {
-            const prop = jsc.forall(arbSecret, autoSolveAsync);
-            return jsc.assert(prop, opts);
-        }).timeout(MS_PER_TEST * opts.tests)
-    }
+    it('finds the correct solution within 5 attempts', () => {
+        const prop = jsc.forall(arbSecret, autoSolveAsync);
+        return jsc.assert(prop, opts);
+    }).timeout(MS_PER_TEST * opts.tests)
 });
