@@ -20,7 +20,7 @@ const GuessFeedback = ({
     }
     const activeContent = () => {
         return (
-            <div className="col-xs-4 col-md-offset-5 col-md-1 feedbackColumn">
+            <div className="col-xs-4 col-sm-offset-5 col-sm-1 feedbackColumn">
                 <button
                     className="btn btn-sm btn-info"
                     {...conditionalAttributesSubmit}
@@ -37,7 +37,7 @@ const GuessFeedback = ({
     };
     const inactiveContent = () => {
         return (
-            <div className="col-xs-4 col-md-offset-5 col-md-1 feedbackColumn">
+            <div className="col-xs-4 col-sm-offset-5 col-sm-1 feedbackColumn">
                 {
                     guess.feedbackPegs.map((_, index) =>
                         <FeedbackPeg

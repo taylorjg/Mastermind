@@ -4,7 +4,7 @@ import Code from './Code';
 
 const GuessCode = ({ active, code, onSetPeg }) => {
     return (
-        <div className="col-xs-8 col-md-3">
+        <div className="col-xs-8 col-sm-3">
             <div className="guessCode">
                 <Code
                     active={active}

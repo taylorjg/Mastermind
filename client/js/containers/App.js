@@ -15,12 +15,12 @@ class App extends Component {
         return (
             <div className="container-fluid">
                 <div className="row">
-                    <div className="col-xs-12 col-md-offset-4 col-md-1">
+                    <div className="col-xs-12 col-sm-offset-4 col-sm-1">
                         <ControlPanel gameState={props.gameState} onStart={props.onStart}></ControlPanel>
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-xs-offset-4 col-xs-8 col-md-offset-6 col-md-3">
+                    <div className="col-xs-offset-4 col-xs-8 col-sm-offset-6 col-sm-3">
                         <SecretCode code={props.secret} reveal={reveal}></SecretCode>
                     </div>
                 </div>
