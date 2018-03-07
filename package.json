@@ -1,12 +1,12 @@
 {
   "name": "mastermind",
-  "version": "0.0.27",
+  "version": "0.0.28",
   "private": true,
   "description": "Mastermind",
-  "main": "server/app.js",
   "scripts": {
-    "start": "node server/app.js",
-    "test": "mocha -r babel-register client/tests/logicTests.js",
+    "start": "node server/index.js",
+    "test": "mocha -r babel-register client/tests/setup.js client/tests/logicTests.js",
+    "test-all": "karma start",
     "heroku-postbuild": "npm install --dev && webpack"
   },
   "author": "Jonathan Taylor",
@@ -20,7 +20,6 @@
     "babel-preset-env": "^1.6.1",
     "babel-preset-es2015": "^6.18.0",
     "babel-register": "^6.26.0",
-    "body-parser": "^1.18.2",
     "chai": "^3.5.0",
     "copy-webpack-plugin": "^4.5.0",
     "eslint": "^3.13.0",

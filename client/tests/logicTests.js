@@ -1,4 +1,3 @@
-import './setup';
 import { expect } from 'chai';
 import { evaluateGuess, initialAutoSolveSet, generateGuessAsync } from '../js/logic';
 import { Peg } from '../js/constants';
